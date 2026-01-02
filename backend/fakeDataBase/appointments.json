@@ -1,0 +1,12 @@
+{
+    "apppointments": [
+        {
+            "id": 1,
+            "dateTime": "2024-06-10T10:00:00Z",
+            "userId": 1,
+            "barberId": 1,
+            "serviceId": 1,
+            "status": "confirmed" 
+        }
+    ]
+}
