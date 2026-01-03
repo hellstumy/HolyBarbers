@@ -17,7 +17,7 @@ router.post('/createService', (req, res) => {
 });
 
 // Update a service
-router.put('/:id', (req, res) => {
+router.put("/:id", (req, res) => {
     const serviceId = parseInt(req.params.id);
     const serviceIndex = services.findIndex(s => s.id === serviceId);
     if (serviceIndex !== -1) {
@@ -26,7 +26,9 @@ router.put('/:id', (req, res) => {
     } else {
         res.status(404).send('Service not found');
     }
+
 });
+
 
 // Delete a service
 router.delete('/:id', (req, res) => {
@@ -38,6 +40,7 @@ router.delete('/:id', (req, res) => {
     } else {
         res.status(404).send('Service not found');
     }
-});
+})
+  
 
 export default router;
