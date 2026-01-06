@@ -1,54 +1,50 @@
 import express from "express";
-import barbers from "../fakeDataBase/barbers.js";
+import pool from "../db/db.js";
 
 const router = express.Router();
 
 // GET barbers
-router.get("/", (req, res) => {
-  res.json(barbers);
+router.get("/", async(req, res) => {
+  const barbers = await pool.query("SELECT * FROM barbers");
+  res.json(barbers.rows);
 });
 
 // GET a specific barber by ID
-router.get("/:id", (req, res) => {
-    const barberId = parseInt(req.params.id);
-    const barber = barbers.find(b => b.id === barberId);
-    if (barber) {
-        res.json(barber);
-    } else {
+router.get("/:id", async(req, res) => {
+    const barber = await pool.query("SELECT * FROM barbers WHERE id = $1", [req.params.id]);
+    if (barber.rows.length === 0) {
         res.status(404).send("Barber not found");
+    } else {
+        res.json(barber.rows[0]);
     }
 });
 
 // POST a new barber
-router.post("/createBarber", (req, res) => {
-    const id = barbers.length ? barbers[barbers.length - 1].id + 1 : 1;
-    const newBarber = {id, ...req.body};
-    barbers.push(newBarber);
-  res.send("Create a new barber").status(201);
+router.post("/createBarber", async(req, res) => {
+    const { name, experiance, rating } = req.body;
+    const newBarber = await pool.query(
+      "INSERT INTO barbers (name, experiance, rating) VALUES ($1, $2, $3) RETURNING *",
+      [name, experiance, rating]
+    );
+    res.json(newBarber.rows[0]);
 });
 
 //  PUT update a barber
-router.put("/:id", (req, res) => {
+router.put("/:id", async(req, res) => {
     const barberId = parseInt(req.params.id);
-    const barberIndex = barbers.findIndex(b => b.id === barberId);
-    if (barberIndex !== -1) {
-        barbers[barberIndex] = { ...barbers[barberIndex], ...req.body };
-        res.send("Barber updated successfully");
-    } else {
-        res.status(404).send("Barber not found");
-    }
+    const { name, experiance, rating, is_active } = req.body;
+    const updatedBarber = await pool.query(
+      "UPDATE barbers SET name = $1, experiance = $2, rating = $3, is_active = $4 WHERE id = $5 RETURNING *",
+      [name, experiance, rating, is_active, barberId]
+    );
+    res.json(updatedBarber.rows[0]);
 });
 
 // DELETE a barber
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async(req, res) => {
     const barberId = parseInt(req.params.id);
-    const barberIndex = barbers.findIndex(b => b.id === barberId);
-    if (barberIndex !== -1) {
-        barbers.splice(barberIndex, 1);
-        res.send("Barber deleted successfully");
-    } else {
-        res.status(404).send("Barber not found");
-    } 
+    await pool.query("DELETE FROM barbers WHERE id = $1", [barberId]);
+    res.send("Barber deleted successfully");
 });
 
 export default router;

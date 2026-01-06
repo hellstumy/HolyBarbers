@@ -1,89 +1,133 @@
 import express from 'express';
-import appointments from '../fakeDataBase/appointments.js';
-import barbers from '../fakeDataBase/barbers.js';
-import services from '../fakeDataBase/servise.js';
+import pool from '../db/db.js';
 
 const router = express.Router();
-const DateNow = new Date();
 
 // Get All Appointments
-router.get('/', (req, res) => {
-  res.json(appointments);
-}); 
+router.get('/', async(req, res) => {
+    const appointments = await pool.query("SELECT * FROM appointments");
+    res.json(appointments.rows);
+});
+// Get Appointment by Phone Number //JOIN with barber, client and service tables to get names
+router.get('/byContact/:contact', async(req, res) => {
+    const contact = req.params.contact;
+    const appointments = await pool.query(
+        `SELECT a.*, b.name AS barber_name, s.name AS service_name 
+         FROM appointments a
+         JOIN barbers b ON a.barber_id = b.id
+         JOIN service s ON a.service_id = s.id
+         WHERE a.client_contact = $1`, 
+        [contact]
+    );
+    res.json(appointments.rows);
+});
 
-// Create a New Appointment
-router.post("/createAppointment", (req, res) => {
-  const { barberId, serviceId, appointmentDate, name, contact } = req.body;
+// Get Appointment by Barber ID //JOIN with barber and service tables to get names
+router.get('/byBarber/:barberId', async(req, res) => {
+    const barberId = req.params.barberId;
+    const appointments = await pool.query(
+        `SELECT a.*, b.name AS barber_name, s.name AS service_name 
+         FROM appointments a
+         JOIN barbers b ON a.barber_id = b.id
+         JOIN service s ON a.service_id = s.id
+         WHERE a.barber_id = $1`, 
+        [barberId]
+    );
+    res.json(appointments.rows);
+});
 
-  
-
-  const barber = barbers.find((b) => b.id === barberId);
-  const service = services.find((s) => s.id === serviceId);
-  const appointmentDateObj = new Date(appointmentDate);
-  const now = new Date();
-
-  if (!barber) {
-    return res.status(400).json({ error: "Invalid barber ID" });
-  }
-
-  if (!service) {
-    return res.status(400).json({ error: "Invalid service ID" });
-  }
-
-  if (isNaN(appointmentDateObj.getTime()) || appointmentDateObj < now) {
-    return res.status(400).json({ error: "Invalid appointment date" });
-  }
-
-  if (!name || !contact) {
-    return res.status(400).json({ error: "User data is required" });
-  }
-
-  const newAppointment = {
-    id: appointments.at(-1)?.id + 1 || 1,
-    barberId,
-    serviceId,
-    userData: { name, contact },
-    dateTime: appointmentDateObj.toISOString(),
-    status: "confirmed",
-  };
-  barber.appointments.push(newAppointment);
-  appointments.push(newAppointment);
-  res.status(201).json(newAppointment);
+// Create a New Appointment 
+router.post("/createAppointment", async(req, res) => {
+    const { barberId, serviceId, appointmentDate, appointment_time, name, contact } = req.body;
+    const newAppointment = await pool.query(
+        "INSERT INTO appointments (barber_id, service_id, appointment_date, appointment_time, client_name, client_contact) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+        [barberId, serviceId, appointmentDate, appointment_time, name, contact]
+    );
+    res.json(newAppointment.rows[0]);
 });
 
 // Update an Appointment
-router.put('/:id', (req, res) => {
-  const appointmentId = parseInt(req.params.id);
-  const appointmentIndex = appointments.findIndex(a => a.id === appointmentId);
-  if (appointmentIndex !== -1) {
-    appointments[appointmentIndex] = { ...appointments[appointmentIndex], ...req.body };
-    res.send('Appointment updated successfully');
-  } else {
-    res.status(404).send('Appointment not found');
-  }
+router.put("/:id", async (req, res) => {
+  const appointmentId = Number(req.params.id);
+  const {
+    barberId,
+    serviceId,
+    appointmentDate,
+    appointment_time,
+    name,
+    contact,
+    status,
+  } = req.body;
 
-  // AUTODELETE status 'cancelled' and 'completed' after 10 sec by setTimeout
-  const appointment = appointments[appointmentIndex];
-  if (appointment.status === 'cancelled' || appointment.status === 'completed') {
-    setTimeout(() => {
-      const index = appointments.findIndex(a => a.id === appointment.id);
-      if (index !== -1) {
-        appointments.splice(index, 1);
-      }
-    }, 10000);
+  // логируем для дебага
+  console.log("Updating appointment ID:", appointmentId);
+  console.log("Body:", req.body);
+
+  try {
+    const result = await pool.query(
+      `UPDATE appointments
+       SET barber_id = $1,
+           service_id = $2,
+           appointment_date = $3,
+           appointment_time = $4,
+           client_name = $5,
+           client_contact = $6,
+           status = COALESCE($7, status)
+       WHERE id = $8
+       RETURNING *`,
+      [
+        barberId,
+        serviceId,
+        appointmentDate,
+        appointment_time,
+        name,
+        contact,
+        status, // если не передан, останется прежним
+        appointmentId,
+      ]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
+    const appointment = result.rows[0];
+    res.json(appointment);
+
+    // автoудаление через 10 секунд, если статус завершён или отменён
+    if (
+      appointment.status === "cancelled" ||
+      appointment.status === "completed"
+    ) {
+      setTimeout(async () => {
+        try {
+          await pool.query("DELETE FROM appointments WHERE id = $1", [
+            appointmentId,
+          ]);
+          console.log(`Appointment ${appointmentId} deleted automatically`);
+        } catch (err) {
+          console.error("Auto-delete error:", err.message);
+        }
+      }, 86400 * 1000); // 24 часа
+    }
+  } catch (err) {
+    console.error("Update error:", err.message);
+    res.status(500).json({ error: "Server error" });
   }
-}); 
+});
 
 // Delete an Appointment
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const appointmentId = parseInt(req.params.id);
-  const appointmentIndex = appointments.findIndex(a => a.id === appointmentId);
-  if (appointmentIndex !== -1) {
-    appointments.splice(appointmentIndex, 1);
-    res.send('Appointment deleted successfully');
+  const deletedAppointment = await pool.query(
+    "DELETE FROM appointments WHERE id = $1 RETURNING *",
+    [appointmentId]
+  );
+  if (deletedAppointment.rows.length === 0) {
+    res.status(404).json({ message: "Appointment not found" });
   } else {
-    res.status(404).send('Appointment not found');
+    res.json({ message: "Appointment deleted successfully" });
   }
-}); 
+});
 
 export default router;
