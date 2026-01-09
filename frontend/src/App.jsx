@@ -1,15 +1,30 @@
-import useStore from "./store/store";
-import MyModal from "./UI/Modal";
+import Footer from "./pages/Layouts/Footer";
+import Header from "./pages/Layouts/Header";
+import { useDevMode } from "./dev/useDevMode";
+import MainPage from "./pages/Main/MainPage";
+
 function App() {
-  const { openModal } = useStore();
+  const [isAdmin, setIsAdmin] = useDevMode();
 
   return (
     <>
-      <MyModal Tittle="Modal Title">
-        
-      </MyModal>
-      <h1>Hello</h1>
-      <button onClick={openModal}>Open Modal</button>
+
+        <Header />
+          {isAdmin ? (
+            <>
+              <h1>Admin Mode Activated</h1>
+              <p>You have access to admin features.</p>
+              <button onClick={() => setIsAdmin(false)}>
+                Turn off Admin Mode
+              </button>
+            </>
+          ) : (
+            <>
+              <MainPage />
+            </>
+          )}
+
+      <Footer />
     </>
   );
 }

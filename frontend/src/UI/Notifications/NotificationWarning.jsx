@@ -1,4 +1,4 @@
-import warning from '../../assets/warning.svg';
+import warning from "../../assets/icons/warning.svg";
 export default function NotificationWarning({ message }) {
     return (
         <div className='notification noti-warning'>

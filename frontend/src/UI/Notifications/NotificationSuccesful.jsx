@@ -1,4 +1,4 @@
-import succes from '../../assets/succes.svg';
+import succes from "../../assets/icons/succes.svg";
 export default function NotificationSuccesful({ message }) {
     return (
         <div className='notification noti-successful'>

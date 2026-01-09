@@ -1,4 +1,4 @@
-import erorr from '../../assets/errorr.svg';
+import erorr from '../../assets/icons/errorr.svg';
 export default function NotificationError({ message }) {
     return (
         <div className='notification noti-error'>

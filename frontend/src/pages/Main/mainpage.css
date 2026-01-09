@@ -1,0 +1,160 @@
+.subtittle{
+    color: rgba(0, 0, 0, 0.60);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: 4.2px;
+}
+/* Hero */
+.main-hero {
+ background-image: url(../../assets/Barberhero.png);
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    align-items: center;
+    background-color: #000;
+}
+
+.hero-content {
+    padding: 125px 16px;
+    display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+}
+.hero-content h1{
+    margin: 2px 0 29px 0;
+    color: #FFF;
+    font-size: 72px;
+}
+.hero-content p{
+    max-width: 460px;
+    color: rgba(255, 255, 255, 0.80);
+    font-size: 18px;
+}
+.hero-buttons {
+    margin-top: 32px;
+    display: flex;
+    gap: 16px;
+}
+
+.hero-tell {
+    color: #FFF;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: 0.35px;
+        padding: 16px 32px;
+        border: 0.8px solid rgba(255, 255, 255, 0.30);
+}
+.hero-tell:hover {
+    background-color: rgba(255, 255, 255, 0.10);
+}
+.hero-tell:active {
+    background-color: rgba(255, 255, 255, 0.20);
+}
+/* About Us Section */
+.aboutUs {
+    padding: 120px 0;
+}
+
+.aboutUs .container {
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 120px;
+    padding: 64px 16px;
+}
+
+.aboutUs-content {
+    max-width: 590px;
+}
+.aboutUs-content h2{
+    color: #0A0A0A;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: -1.2px;
+    margin-bottom: 16px;
+}
+
+.aboutUs-content p{
+    color: rgba(0, 0, 0, 0.60);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: 0.35px;
+    margin-bottom: 16px;
+}
+
+.aboutUs-info {
+        margin-top: 32px;
+    display: flex;
+    gap: 40px;
+}
+.aboutUs-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.aboutUs-info-item h3{
+    color: #0A0A0A;
+        font-size: 30px;
+        font-weight: 700;
+        text-align: center;
+}
+.aboutUs-info-item p{
+    color: rgba(0, 0, 0, 0.60);
+        font-family: Arial;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+}
+
+.aboutUs-info-line {
+    width: 1px;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.10);
+}
+
+.aboutus-cards {
+    
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+}
+
+.aboutus-card {
+    padding: 24px 24px 3px 24px;
+    max-width: 234px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border: 0.8px solid rgba(0, 0, 0, 0.10);
+}
+.aboutus-card h5{
+    color: #0A0A0A;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+}
+.aboutus-card p{
+    color: rgba(0, 0, 0, 0.60);
+        font-family: Arial;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+}
+.aboutUs-icon{
+    background-color: #000;
+    width: 48px;
+    height: 48px;
+    padding: 12px;
+}
+.aboutUs-img {
+    width: 24px;
+    height: 24px;
+    
+}

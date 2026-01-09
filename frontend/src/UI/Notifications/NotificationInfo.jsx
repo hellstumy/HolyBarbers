@@ -1,4 +1,4 @@
-import info from '../../assets/info.svg';
+import info from "../../assets/icons/info.svg";
 export default function NotificationInfo({ message }) {
     return (
         <div className='notification noti-info'>

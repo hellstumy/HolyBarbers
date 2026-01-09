@@ -12,7 +12,8 @@
         transition: all 0.3s ease;
 }
 .primary-button:hover{
-    background: #222;
+    background: #141414;
+    opacity: 0.9;
 
 }
 .primary-button:active{
