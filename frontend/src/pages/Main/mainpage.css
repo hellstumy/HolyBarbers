@@ -18,18 +18,22 @@
 
 .hero-content {
     padding: 125px 16px;
+    padding: clamp(40px, 12vw, 125px) 16px;
     display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 .hero-content h1{
     margin: 2px 0 29px 0;
     color: #FFF;
-    font-size: 72px;
+    font-size: clamp(32px, 6vw, 72px);
 }
 .hero-content p{
-    max-width: 460px;
+    max-width: 560px;
     color: rgba(255, 255, 255, 0.80);
     font-size: 18px;
 }
@@ -60,16 +64,17 @@
 }
 
 .aboutUs .container {
-    
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 120px;
     padding: 64px 16px;
+    flex-wrap: wrap;
 }
 
 .aboutUs-content {
     max-width: 590px;
+    flex: 1 1 320px;
 }
 .aboutUs-content h2{
     color: #0A0A0A;
@@ -120,7 +125,6 @@
 }
 
 .aboutus-cards {
-    
     display: grid;
     grid-template-columns: repeat(2, 1fr);
         gap: 24px;
@@ -158,3 +162,169 @@
     height: 24px;
     
 }
+/* Our Service */
+.OurServise {
+    background: #000;
+    padding: 127px 0;
+}
+
+.OurServise .container {
+    
+}
+.OurServise h2{
+    color: #FFF;
+        font-family: Arial;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: -1.2px;
+
+        margin: 11px 0 19px 0;
+}
+.OurServise p{
+    color: rgba(255, 255, 255, 0.70);
+        font-size: 16px;
+}
+.OurServise .subtittle {
+    color: rgba(255, 255, 255, 0.60);
+}
+
+.OurServise_cards {
+    margin: 108px 0 97px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.OurServise_card {
+    max-width: 293.8px;
+    padding: 32px;
+    border: 0.8px solid rgba(255, 255, 255, 0.10);
+}
+.OurServise_card h5{
+    color: #FFF;
+        font-family: Arial;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        margin: 22px 0 12px 0;
+}
+.OurServise_card p{
+    color: rgba(255, 255, 255, 0.60);
+        font-size: 14px;
+}
+.OurServise_img_container {
+    width: 48px;
+    height: 48px;
+    padding: 12px;
+    border: 0.8px solid rgba(255, 255, 255, 0.20);
+}
+.OurServise_img_container img{
+    width: 24px;
+     height: 24px;
+     
+}
+
+.OurSerice_line {
+    display: block;
+    border-top: 0.8px solid rgba(255, 255, 255, 0.10);
+    margin: 6px 0;
+}
+.OurServide_card_info {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.OurServise .secondary-button{
+    display: block;
+        margin: 0 auto;
+}
+/* Barbers */
+.OurBarbers h2 {  
+    color: #0A0A0A;
+        font-family: Arial;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: -1.2px;
+        margin-bottom: 19px;
+}
+
+.OurBarbers .container {
+    padding-top: 126px;
+
+}
+
+
+.OurBarbers_carusel {
+    margin: 74px 40px;    
+    text-align: left;
+    overflow: hidden;
+}
+.splide__arrow--prev {
+    left: 0em;
+}
+.splide__arrow--next {
+    right: 5.7em;
+}
+.OurBarbers_carusel p{
+    color: rgba(0, 0, 0, 0.60);
+        font-size: 18px;
+}
+.OurBarbers_carusel img{
+    max-width: 100%;
+        height: auto;
+}
+.Barber-name {
+        color: #0A0A0A;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            margin-top: 21px;
+            margin-bottom: 12px;
+            
+}   
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .hero-content { padding: 100px 16px; }
+    .hero-content h1 { font-size: 56px; }
+    .aboutUs .container { gap: 40px; padding: 48px 16px; }
+    .aboutus-cards { grid-template-columns: repeat(2, 1fr); }
+    .OurServise_cards { margin: 60px 0; }
+    .OurBarbers_carusel img { width: 320px; height: auto; }
+}
+
+@media (max-width: 768px) {
+    .main-hero { background-position: center top; }
+    .hero-content { padding: 80px 16px; align-items: center; text-align: center; }
+    .hero-content h1 { font-size: 40px; }
+    .hero-content p { max-width: 100%; }
+    .hero-buttons { flex-direction: column; align-items: center; }
+
+    .aboutUs .container { flex-direction: column; gap: 24px; padding: 32px 16px; }
+    .aboutUs-info { flex-direction: column; align-items: center; }
+    .aboutus-cards { grid-template-columns: 1fr; }
+
+    .OurServise_cards { flex-direction: column; gap: 24px; margin: 40px 0; }
+    .OurServide_card_info { flex-direction: column; gap: 12px; }
+
+    .OurBarbers_carusel { margin: 40px 0; }
+    .OurBarbers_carusel img { width: 100%; height: auto; }
+    .splide__arrow--prev, .splide__arrow--next { right: auto; left: auto; }
+}
+
+@media (max-width: 480px) {
+    .hero-content { padding: 60px 12px; }
+    .hero-content h1 { font-size: 32px; }
+    .subtittle { font-size: 12px; letter-spacing: 2px; }
+    .aboutUs { padding: 60px 0; }
+    .OurServise h2, .OurBarbers h2 { font-size: 32px; }
+    .aboutus-card { max-width: 100%; padding: 16px; }
+    .aboutUs-info-line { display: none; }
+    .splide__arrow--prev, .splide__arrow--next { display: none; }
+}
+
