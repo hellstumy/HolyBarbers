@@ -1,0 +1,157 @@
+.adminPage h2 {
+    color: #0A0A0A;
+        font-family: Arial;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: -1.2px;
+        margin-bottom: 54px;
+}
+
+
+
+
+.toggle {
+    color: rgba(0, 0, 0, 0.60);
+        text-align: center;
+        font-family: Arial;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: 0.35px;
+        padding: 12px 23px;
+        border: 0.8px solid rgba(0, 0, 0, 0.10);
+        background: #FFF;
+}
+
+.toggle-active {
+    color: #FFF;
+    background: #000;
+    margin-bottom: 38px;
+}
+
+.service-admin {}
+
+.admin-tittle{
+display: flex;
+justify-content: space-between;
+}
+.admin-tittle h3 {
+    color: #0A0A0A;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 400;
+}
+
+.service-name {
+    color: #0A0A0A;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+}
+
+.service-price {
+    color: #0A0A0A;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+}
+
+.service-time {
+    color: rgba(0, 0, 0, 0.60);
+        font-family: Arial;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+}
+
+.service-buttons {
+    display: flex;
+    gap: 24px;
+}
+.service-buttons button{
+    background: none;
+}
+/* Barber page */
+.admin_barbers {}
+
+
+.AdminBarbers-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 36px;
+}
+
+.adminBarber-card {
+    padding: 20px;
+    border: 0.8px solid rgba(0, 0, 0, 0.10);
+    max-width: 399.725px;
+}
+.admin_barbers img{
+    max-width: 456px;
+    max-height: 256px;
+}
+
+.barber-name {
+    color: #0A0A0A;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        margin-bottom: 10px;
+}
+
+.barber-stats {
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+
+}
+
+.barber-experiance {
+    padding: 5px;
+    border: 0.8px solid rgba(0, 0, 0, 0.10);
+color: #0A0A0A;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.barber-IsActive {
+    padding: 5px;
+        border: 0.8px solid rgba(0, 0, 0, 0.10);
+    color: #0A0A0A;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+}
+
+.barber-active {
+    color: #058728;
+}
+.barber-nonActive{
+    color: #d91c1c;
+}
+
+.barber-buttons {
+    display: flex;
+    gap: 12px;
+}
+.barber-buttons button{
+    background: none;
+}
+.table-tittle{
+    color: #0A0A0A;
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 0.35px;
+}
+.table-data{
+    color: #0A0A0A;
+        font-size: 14px;
+        font-weight: 400;
+
+}
+.modal-tittle-container h2 {
+    font-size: 36px;
+}

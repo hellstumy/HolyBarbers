@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import AdminPage from "../pages/Admin/AdminPage";
 
 const useStore = create((set) => ({
   modalState: {
@@ -37,6 +38,17 @@ const useStore = create((set) => ({
     set(() => ({
       pageState: "FindAppointment",
     })),
+
+    AdminState: 'Service',
+    setAdminService: ()=>set(()=>({
+      AdminState: 'Service'
+    })),
+    setAdminBarbers: ()=>set(()=>({
+      AdminState: 'Barbers'
+    })),
+    setAdminAppointmen: ()=>set(()=>({
+      AdminState: 'Appointmen'
+    }))
 }));
 
 export default useStore;

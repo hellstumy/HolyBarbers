@@ -267,12 +267,15 @@ letter-spacing: 0.35px;
 }
 .modal-tittle-container{
     max-width: 100%;
-    margin-bottom: 18px;
     display: flex;
         justify-content: space-between;
         align-items: center;
 }
+.modal-tittle-container h2{
+    font-size: 36px;
+}
 .modal-content h2{
+    
     text-align: left;
         
 }
@@ -284,6 +287,11 @@ letter-spacing: 0.35px;
     height: 1px;
     background: rgba(0, 0, 0, 0.10);
     margin-bottom: 20px;
+}
+.modal-body{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .modal-close{

@@ -1,8 +1,8 @@
 import useStore from "../store/store.js";
 import '../UI/ui.css'
 export default function MyModal({children, Tittle}) {
-    const { modalSate, closeModal } = useStore();
-    if (!modalSate.isOpen) return null;
+    const { modalState, closeModal } = useStore();
+    if (!modalState.isOpen) return null;
 
     return (
       <div className="modal-backdrop" onClick={closeModal}>
