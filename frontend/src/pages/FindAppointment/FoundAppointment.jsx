@@ -4,14 +4,17 @@ import minitime from '../../assets/icons/mini-time.svg'
 import minisiccers from '../../assets/icons/mini-siccets.svg'
 import './findappointment.css'
 
-export default function FoundAppointment({ data }){
-  const { service, date, time, master } = data;
+export default function FoundAppointment({ phoneData }) {
+
+  
   return (
     <article className="found-card">
       <div className="found-head">
         <div>
-          <h4>{service}</h4>
-          <p className="date-time">{date} в {time}</p>
+          <h4>{phoneData.service_name}</h4>
+          <p className="date-time">
+            {phoneData.appointment_date} в {phoneData.appointment_time}
+          </p>
         </div>
       </div>
 
@@ -21,7 +24,7 @@ export default function FoundAppointment({ data }){
             <img src={man} alt="master" />
           </div>
           <p className="label">Мастер</p>
-          <p className="info-name">{master.name}</p>
+          <p className="info-name">{phoneData.barber_name}</p>
         </div>
 
         <div className="found-item">
@@ -29,7 +32,7 @@ export default function FoundAppointment({ data }){
             <img src={minisiccers} alt="service" />
           </div>
           <p className="label">Услуга</p>
-          <p className="info-name">{service}</p>
+          <p className="info-name">{phoneData.service_name}</p>
         </div>
 
         <div className="found-item">
@@ -37,7 +40,7 @@ export default function FoundAppointment({ data }){
             <img src={calendar} alt="date" />
           </div>
           <p className="label">Дата</p>
-          <p className="info-name">{date}</p>
+          <p className="info-name">{phoneData.appointment_date}</p>
         </div>
 
         <div className="found-item">
@@ -45,9 +48,9 @@ export default function FoundAppointment({ data }){
             <img src={minitime} alt="time" />
           </div>
           <p className="label">Время</p>
-          <p className="info-name">{time}</p>
+          <p className="info-name">{phoneData.appointment_time}</p>
         </div>
       </div>
     </article>
-  )
+  );
 }

@@ -4,10 +4,15 @@ import pool from "../db/db.js";
 const router = express.Router();
 
 // GET barbers
-router.get("/", async(req, res) => {
-  const barbers = await pool.query("SELECT * FROM barbers");
-  res.json(barbers.rows);
+router.get("/", async (req, res) => {
+  try {
+    const barbers = await pool.query("SELECT * FROM barbers");
+    res.json(barbers.rows);
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
 });
+
 
 // GET a specific barber by ID
 router.get("/:id", async(req, res) => {
@@ -20,31 +25,72 @@ router.get("/:id", async(req, res) => {
 });
 
 // POST a new barber
-router.post("/createBarber", async(req, res) => {
-    const { name, experiance, rating } = req.body;
+// POST a new barber
+router.post("/createBarber", async (req, res) => {
+  try {
+    const { name, experiance, is_active, img_url } = req.body;
+
     const newBarber = await pool.query(
-      "INSERT INTO barbers (name, experiance, rating) VALUES ($1, $2, $3) RETURNING *",
-      [name, experiance, rating]
+      `INSERT INTO barbers (name, experiance, is_active, "img_url")
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`,
+      [name, experiance, is_active, img_url]
     );
+
     res.json(newBarber.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
 });
 
-//  PUT update a barber
-router.put("/:id", async(req, res) => {
-    const barberId = parseInt(req.params.id);
-    const { name, experiance, rating, is_active } = req.body;
+// PUT update a barber
+router.put("/:id", async (req, res) => {
+  try {
+    const barberId = Number(req.params.id);
+    const { name, experiance, is_active, img_url } = req.body;
+
     const updatedBarber = await pool.query(
-      "UPDATE barbers SET name = $1, experiance = $2, rating = $3, is_active = $4 WHERE id = $5 RETURNING *",
-      [name, experiance, rating, is_active, barberId]
+      `UPDATE barbers
+       SET name = $1,
+           experiance = $2,
+           is_active = $3,
+           "img_url" = $4
+       WHERE id = $5
+       RETURNING *`,
+      [name, experiance, is_active, img_url, barberId]
     );
+
+    if (updatedBarber.rows.length === 0) {
+      return res.status(404).send("Barber not found");
+    }
+
     res.json(updatedBarber.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
 });
 
 // DELETE a barber
-router.delete("/:id", async(req, res) => {
-    const barberId = parseInt(req.params.id);
-    await pool.query("DELETE FROM barbers WHERE id = $1", [barberId]);
+router.delete("/:id", async (req, res) => {
+  try {
+    const barberId = Number(req.params.id);
+
+    const result = await pool.query(
+      "DELETE FROM barbers WHERE id = $1 RETURNING *",
+      [barberId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).send("Barber not found");
+    }
+
     res.send("Barber deleted successfully");
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
 });
+
 
 export default router;

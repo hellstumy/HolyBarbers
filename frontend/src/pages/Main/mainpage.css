@@ -264,6 +264,12 @@
     text-align: left;
     overflow: hidden;
 }
+.barbers-slides{
+    max-width: 85%;
+}
+.barbers-slides img{
+    max-width: 360px;
+}
 .splide__arrow--prev {
     left: 0em;
 }

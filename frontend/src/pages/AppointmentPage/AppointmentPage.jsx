@@ -1,34 +1,72 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Select from '../../UI/Inputs/Select.jsx'
 import "./appointment.css";
 import TextInput from '../../UI/Inputs/TextInput.jsx';
 import PrimaryButton from '../../UI/Buttons/PrimaryButton.jsx';
+import { barbersApi } from "../../../api/barbers.api.js";
+import { servicesApi } from '../../../api/services.api.js';
+import { appointmentsApi } from '../../../api/appointments.api.js';
+
+
 export default function AppointmentPage(){
-    const [selectedHaircut, setSelectedHaircut] = useState("");
+const openingHours = {
+  1: { start: "10:00", end: "20:00" }, // Poniedziałek (Monday)
+  2: { start: "10:00", end: "20:00" }, // Wtorek
+  3: { start: "10:00", end: "20:00" }, // Środa
+  4: { start: "10:00", end: "20:00" }, // Czwartek
+  5: { start: "10:00", end: "20:00" }, // Piątek
+  6: { start: "10:00", end: "18:00" }, // Sobota
+  0: null, // Niedziela – close
+};
+
+  const [barbers, setBarbers] = useState([])
+  const [services, setServices] = useState([])
+  useEffect(() => {
+      barbersApi.getAllBarbers().then(setBarbers).catch(console.error);
+    }, []);
+
+    useEffect(()=>{
+      servicesApi.getAllService().then(setServices).catch(console.error)
+    },[])
+
+    const [master, setMaster] = useState(null)
+    const [selectedHaircut, setSelectedHaircut] = useState(null);
     const [date, setDate] = useState(null)
     const [time, setTime] = useState(null)
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
 
+    const handleCreateAppointment = async () => {
+      if (!master || !selectedHaircut || !date || !time || !name || !phone) {
+        alert("Заполните все поля");
+        return;
+      }
 
-    const haircutOptions = [
-      { value: "buzzcut", label: "Короткая стрижка" },
-      { value: "undercut", label: "Андеркат" },
-      { value: "pompadour", label: "Помпадур" },
-      { value: "bob", label: "Боб" },
-      { value: "mohawk", label: "Ирокез" },
-    ];
+      try {
+        const response = await appointmentsApi.createAppointmant({
+          barberId: master,
+          serviceId: selectedHaircut,
+          appointmentDate: date,
+          appointment_time: time,
+          name,
+          contact: phone,
+        });
 
-    const masters = [
-      {
-        name: "Александр Петров",
-        photo:
-          "https://img.freepik.com/free-photo/barber-man-apron-with-hairdressing-tools-looking-camera-with-serious-confident-expression-standing-white-background_141793-118147.jpg?semt=ais_hybrid&w=740&q=80",
-      },
-      { name: "Иван Смирнов" },
-      { name: "Михаил Козлов" },
-    ];
-    const [selectedMaster, setSelectedMaster] = useState(null);
+        console.log(response)
+
+        alert("Запись успешно создана!");
+        // clean form
+        setMaster(null);
+        setSelectedHaircut(null);
+        setDate(null);
+        setTime(null);
+        setName("");
+        setPhone("");
+      } catch (err) {
+        console.error(err);
+        alert("Ошибка при создании записи");
+      }
+    };
 
 
     return (
@@ -45,24 +83,29 @@ export default function AppointmentPage(){
             <Select
               value={selectedHaircut}
               onChange={(e) => setSelectedHaircut(e.target.value)}
-              options={haircutOptions}
-            />
+            >
+              {services.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {`${s.name}   ${s.price}zl`}
+                </option>
+              ))}
+            </Select>
           </div>
           <div className="form-select">
-            <p>ВЫБЕРИТЕ Мастера</p>
+            <p>ВЫБЕРИТЕ МАСТЕРА</p>
             <div className="masters-list">
-              {masters.map((m, i) => {
+              {barbers.map((b) => {
                 return (
                   <div
                     role="button"
-                    tabIndex={0}
-                    className={`master-card ${selectedMaster === i ? 'selected' : ''}`}
-                    key={i}
-                    onClick={() => setSelectedMaster(i)}
-                    onKeyDown={() => setSelectedMaster(i)}
+                    className={`master-card ${
+                      master === b.id ? "selected" : ""
+                    }`}
+                    key={b.id}
+                    onClick={() => setMaster(b.id)}
                   >
-                    <img src={m.photo} alt={m.name} />
-                    <p className="master-name">{m.name}</p>
+                    <img src={b.img_url} alt={b.name} />
+                    <p className="master-name">{b.name}</p>
                   </div>
                 );
               })}
@@ -71,21 +114,55 @@ export default function AppointmentPage(){
           <div className="form-select">
             <p>ДАТА</p>
             <TextInput
-              onChange={(e) => setDate(e.target.value)}
-              type={"date"}
+              type="date"
+              value={date}
+              onChange={(e) => {
+                const selectedDate = new Date(e.target.value);
+                const day = selectedDate.getDay();
+                if (!openingHours[day]) {
+                  alert(
+                    "Выбраный день закрыт! Пожалуйста, выберите другой день."
+                  );
+                  setDate(null);
+                } else {
+                  setDate(e.target.value);
+                  setTime(null);
+                }
+              }}
             />
           </div>
           <div className="form-select">
             <p>ВРЕМЯ</p>
             <TextInput
-              onChange={(e) => setTime(e.target.value)}
-              type={"time"}
+              type="time"
+              value={time}
+              onChange={(e) => {
+                if (!date) {
+                  alert("Сначала выберите дату");
+                  return;
+                }
+                const selectedTime = e.target.value;
+                const day = new Date(date).getDay();
+                const hours = openingHours[day];
+                if (!hours) {
+                  alert("Этот день закрыт!");
+                  setTime(null);
+                  return;
+                }
+                if (selectedTime < hours.start || selectedTime > hours.end) {
+                  alert(`Выберите время между ${hours.start} и ${hours.end}`);
+                  setTime(null);
+                } else {
+                  setTime(selectedTime);
+                }
+              }}
             />
           </div>
           <div className="form-select">
             <div>
               Имя:
               <TextInput
+                value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder={"Боб"}
               />
@@ -94,15 +171,19 @@ export default function AppointmentPage(){
             <div>
               Телефон:
               <TextInput
+                value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder={"(888) 123 456 789"}
               />
             </div>
           </div>
           <div className="form-action">
-            <PrimaryButton>ПОДТВЕРДИТЬ ЗАПИСЬ</PrimaryButton>
+            <PrimaryButton onClick={handleCreateAppointment}>
+              ПОДТВЕРДИТЬ ЗАПИСЬ
+            </PrimaryButton>
           </div>
         </div>
+        <p>{`Name:${name} ,Phone:${phone} , Date:${date} , Time:${time} , Master:${master} , Service:${selectedHaircut} ,`}</p>
       </section>
     );
 }

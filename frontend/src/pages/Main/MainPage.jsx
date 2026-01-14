@@ -6,15 +6,21 @@ import people from "../../assets/icons/people.svg";
 import person from "../../assets/icons/person.svg";
 import magic from "../../assets/icons/magic.svg";
 import siccers from "../../assets/icons/siccers.svg";
-import testbarber from '../../assets/testbarber.png'
 import "./mainpage.css";
+import   {  barbersApi }  from "../../../api/barbers.api";
 
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-
+import { useEffect, useState } from "react";
 
 
 export default function MainPage() {
+  const [barbers, setBarbers] = useState([]);
+
+  useEffect(() => {
+    barbersApi.getAllBarbers().then(setBarbers).catch(console.error);
+  }, []);
+
     return (
       <main>
         <section className="main-hero">
@@ -117,52 +123,52 @@ export default function MainPage() {
                 <div className="OurServise_img_container">
                   <img src={siccers} alt="" />
                 </div>
-                <h5>Классическая стрижка</h5>
+                <h5>Strzyżenie włosów (Haircut)</h5>
                 <p>Профессиональная стрижка с учетом формы лица и типа волос</p>
                 <span className="OurSerice_line"></span>
                 <div className="OurServide_card_info">
                   <p>45 мин</p>
-                  <p>3000 $</p>
+                  <p>90 zł</p>
                 </div>
               </div>
               <div className="OurServise_card">
                 <div className="OurServise_img_container">
                   <img src={person} alt="" />
                 </div>
-                <h5>Моделирование бороды</h5>
+                <h5>Broda (Beard Trim)</h5>
                 <p>Придание формы и ухоженного вида вашей бороде</p>
                 <span className="OurSerice_line"></span>
                 <div className="OurServide_card_info">
                   <p>30 мин</p>
-                  <p>2000 $</p>
+                  <p>60 zł</p>
                 </div>
               </div>
               <div className="OurServise_card">
                 <div className="OurServise_img_container">
                   <img src={star} alt="" />
                 </div>
-                <h5>Комплекс премиум</h5>
+                <h5>Kombo (strzyżenie + broda)</h5>
                 <p>Стрижка + борода + уход за кожей лица</p>
                 <span className="OurSerice_line"></span>
                 <div className="OurServide_card_info">
-                  <p>90 мин</p>
-                  <p>5500 $</p>
+                  <p>75 мин</p>
+                  <p>120 zł</p>
                 </div>
               </div>
               <div className="OurServise_card">
                 <div className="OurServise_img_container">
                   <img src={magic} alt="" />
                 </div>
-                <h5>Королевское бритье</h5>
+                <h5>Tata + syn do 10 lat</h5>
                 <p>Традиционное бритье опасной бритвой с горячим компрессом</p>
                 <span className="OurSerice_line"></span>
                 <div className="OurServide_card_info">
-                  <p>40 мин</p>
-                  <p>2500 $</p>
+                  <p>90 мин</p>
+                  <p>140 zł</p>
                 </div>
               </div>
             </div>
-            <SecondaryButton className="secondary-button">
+            <SecondaryButton  className="secondary-button">
               ЗАПИСАТЬСЯ НА УСЛУГУ
             </SecondaryButton>
           </div>
@@ -182,29 +188,17 @@ export default function MainPage() {
                   perPage: 3,
                   rewind: true,
                 }}
-                perPage="3"
                 aria-label="Barbers"
               >
-                <SplideSlide>
-                  <img src={testbarber} alt="Image 1" />
-                  <h4 className="Barber-name">Александр Петров</h4>
-                  <p>Опыт работы: 5 месяцев</p>
-                </SplideSlide>
-                <SplideSlide>
-                  <img src={testbarber} alt="Image 2" />
-                  <h4 className="Barber-name">Дмитрий Соколов</h4>
-                  <p>Опыт работы: 5 месяцев</p>
-                </SplideSlide>
-                <SplideSlide>
-                  <img src={testbarber} alt="Image 1" />
-                  <h4 className="Barber-name">Александр Петров</h4>
-                  <p>Опыт работы: 5 месяцев</p>
-                </SplideSlide>
-                <SplideSlide>
-                  <img src={testbarber} alt="Image 2" />
-                  <h4 className="Barber-name">Дмитрий Соколов</h4>
-                  <p>Опыт работы: 5 месяцев</p>
-                </SplideSlide>
+                {barbers.map((b) => (
+                  <SplideSlide>
+                    <div className="barbers-slides">
+                      <img src={b.img_url} alt="Image 1" />
+                      <h4 className="Barber-name">{b.name}</h4>
+                      <p>{`Опыт работы: ${b.experiance} месяцев`}</p>
+                    </div>
+                  </SplideSlide>
+                ))}
               </Splide>
             </div>
           </div>

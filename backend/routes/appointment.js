@@ -4,36 +4,98 @@ import pool from '../db/db.js';
 const router = express.Router();
 
 // Get All Appointments
-router.get('/', async(req, res) => {
-    const appointments = await pool.query("SELECT * FROM appointments");
-    res.json(appointments.rows);
+router.get("/", async (req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT
+        a.id,
+        a.barber_id,
+        a.service_id,
+        a.appointment_date::date AS appointment_date,
+        a.appointment_time,
+        a.client_name,
+        a.client_contact,
+        a.status,
+        b.name AS barber_name,
+        s.name AS service_name
+      FROM appointments a
+      JOIN barbers b ON a.barber_id = b.id
+      JOIN service s ON a.service_id = s.id
+      ORDER BY a.appointment_date, a.appointment_time
+    `);
+
+    res.json(rows);
+  } catch (err) {
+    console.error("GET /appointments error:", err.message);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 // Get Appointment by Phone Number //JOIN with barber, client and service tables to get names
-router.get('/byContact/:contact', async(req, res) => {
-    const contact = req.params.contact;
-    const appointments = await pool.query(
-        `SELECT a.*, b.name AS barber_name, s.name AS service_name 
-         FROM appointments a
-         JOIN barbers b ON a.barber_id = b.id
-         JOIN service s ON a.service_id = s.id
-         WHERE a.client_contact = $1`, 
-        [contact]
+router.get("/byContact/:contact", async (req, res) => {
+  try {
+    const { contact } = req.params;
+
+    const { rows } = await pool.query(
+      `
+      SELECT
+        a.id,
+        a.barber_id,
+        a.service_id,
+        a.appointment_date::date AS appointment_date,
+        a.appointment_time,
+        a.client_name,
+        a.client_contact,
+        a.status,
+        b.name AS barber_name,
+        s.name AS service_name
+      FROM appointments a
+      JOIN barbers b ON a.barber_id = b.id
+      JOIN service s ON a.service_id = s.id
+      WHERE a.client_contact = $1
+      ORDER BY a.appointment_date, a.appointment_time
+      `,
+      [contact]
     );
-    res.json(appointments.rows);
+
+    res.json(rows);
+  } catch (err) {
+    console.error("GET /appointments/byContact error:", err.message);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 // Get Appointment by Barber ID //JOIN with barber and service tables to get names
-router.get('/byBarber/:barberId', async(req, res) => {
-    const barberId = req.params.barberId;
-    const appointments = await pool.query(
-        `SELECT a.*, b.name AS barber_name, s.name AS service_name 
-         FROM appointments a
-         JOIN barbers b ON a.barber_id = b.id
-         JOIN service s ON a.service_id = s.id
-         WHERE a.barber_id = $1`, 
-        [barberId]
+router.get("/byBarber/:barberId", async (req, res) => {
+  try {
+    const barberId = Number(req.params.barberId);
+
+    const { rows } = await pool.query(
+      `
+      SELECT
+        a.id,
+        a.barber_id,
+        a.service_id,
+        a.appointment_date::date AS appointment_date,
+        a.appointment_time,
+        a.client_name,
+        a.client_contact,
+        a.status,
+        b.name AS barber_name,
+        s.name AS service_name
+      FROM appointments a
+      JOIN barbers b ON a.barber_id = b.id
+      JOIN service s ON a.service_id = s.id
+      WHERE a.barber_id = $1
+      ORDER BY a.appointment_date, a.appointment_time
+      `,
+      [barberId]
     );
-    res.json(appointments.rows);
+
+    res.json(rows);
+  } catch (err) {
+    console.error("GET /appointments/byBarber error:", err.message);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 // Create a New Appointment 

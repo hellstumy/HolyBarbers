@@ -5,22 +5,95 @@ import TextInput from "../../../UI/Inputs/TextInput.jsx";
 import MyModal from "../../../UI/Modal.jsx";
 import TableUI from "../../../UI/Sheets.jsx";
 import useStore from "../../../store/store.js";
-import { useState } from "react";
+import { servicesApi } from "../../../../api/services.api.js";
+import { useEffect, useState } from "react";
 
 export default function AdminService() {
-    const [modalPage, setModalPage] = useState("")
-    const {openModal} = useStore()
+  const [services, setServices] = useState([]);
+  const [modalPage, setModalPage] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [currentService, setCurrentService] = useState(null);
+  const { openModal, closeModal } = useStore();
 
+  // Get All servises
+  useEffect(() => {
+    servicesApi.getAllService().then(setServices).catch(console.error);
+  }, []);
 
-    const editModalPage = () => {
-      setModalPage("EditModal");
-      openModal();
-    };
+  // Delete servise
+  const handleDelete = async (id) => {
+    try {
+      await servicesApi.removeService(id);
+      setServices((prev) => prev.filter((s) => s.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-    const createModalPage = () => {
-      setModalPage("CreateModal");
-      openModal();
-    };
+  // create new servise
+  const handleCreate = async () => {
+    try {
+      const newService = await servicesApi.createService({
+        name,
+        price,
+        duration,
+      });
+      setServices((prev) => [...prev, newService]);
+      closeModal();
+      setName("");
+      setPrice(0);
+      setDuration(0);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // edit servise
+  const handleUpdate = async () => {
+    if (!currentService) return;
+    try {
+      const updatedService = await servicesApi.updateService(
+        currentService.id,
+        { name, price, duration }
+      );
+
+      // update UI
+      setServices((prev) =>
+        prev.map((s) => (s.id === currentService.id ? updatedService : s))
+      );
+
+      closeModal();
+      setCurrentService(null);
+      setName("");
+      setPrice(0);
+      setDuration(0);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Открыть модалку редактирования
+  const editModalPage = (service) => {
+    setCurrentService(service);
+    setModalPage("EditModal");
+    setName(service.name);
+    setPrice(service.price);
+    setDuration(service.duration);
+    openModal();
+  };
+
+  // Открыть модалку создания
+  const createModalPage = () => {
+    setCurrentService(null);
+    setModalPage("CreateModal");
+    setName("");
+    setPrice(0);
+    setDuration(0);
+    openModal();
+  };
+
   return (
     <div className="service-admin">
       <MyModal
@@ -28,11 +101,25 @@ export default function AdminService() {
           modalPage === "EditModal" ? "Редактировать услугу" : "Создать услугу"
         }
       >
-        <TextInput placeholder="Имя услуги" />
-        <TextInput placeholder="Цена услуги" />
-        <TextInput placeholder="Длительность услуги" />
+        <TextInput
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Имя услуги"
+        />
+        <TextInput
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          placeholder="Цена услуги"
+        />
+        <TextInput
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+          placeholder="Длительность услуги"
+        />
 
-        <PrimaryButton>
+        <PrimaryButton
+          onClick={modalPage === "EditModal" ? handleUpdate : handleCreate}
+        >
           {modalPage === "EditModal" ? "Редактировать" : "Создать"}
         </PrimaryButton>
       </MyModal>
@@ -41,6 +128,7 @@ export default function AdminService() {
         <h3>Управление услугами</h3>
         <PrimaryButton onClick={createModalPage}>СОЗДАТЬ УСЛУГУ</PrimaryButton>
       </div>
+
       <TableUI>
         <div>
           <div>НАЗВАНИЕ</div>
@@ -48,20 +136,22 @@ export default function AdminService() {
           <div>ВРЕМЯ</div>
           <div>ДЕЙСТВИЯ</div>
         </div>
-        <div className="table-data">
-          <div className="service-name">Классическая стрижка</div>
-          <div className="service-price">3000 </div>
-          <div className="service-time">45 мин</div>
-          <div className="service-buttons">
-            <button onClick={editModalPage}>
-              <img src={edit} alt="" />
-            </button>
+        {services.map((s) => (
+          <div key={s.id} className="table-data">
+            <div className="service-name">{s.name}</div>
+            <div className="service-price">{s.price} zl</div>
+            <div className="service-time">{s.duration} minut</div>
+            <div className="service-buttons">
+              <button onClick={() => editModalPage(s)}>
+                <img src={edit} alt="" />
+              </button>
 
-            <button>
-              <img src={delbutton} alt="" />
-            </button>
+              <button onClick={() => handleDelete(s.id)}>
+                <img src={delbutton} alt="" />
+              </button>
+            </div>
           </div>
-        </div>
+        ))}
       </TableUI>
     </div>
   );

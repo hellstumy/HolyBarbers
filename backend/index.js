@@ -3,12 +3,14 @@ import barberRoutes from './routes/barber.js';
 import serviceRoutes from './routes/servise.js';  
 import appointmentRoutes from './routes/appointment.js';
 import dotenv from 'dotenv';
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
+const PORT = process.env.PORT || 3000;
+app.use(cors());
 app.use(express.json());
 
 // TODO : Import and use user routes
