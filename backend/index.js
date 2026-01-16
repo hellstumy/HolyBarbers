@@ -1,27 +1,30 @@
-import express from 'express';
-import barberRoutes from './routes/barber.js';  
-import serviceRoutes from './routes/servise.js';  
-import appointmentRoutes from './routes/appointment.js';
-import dotenv from 'dotenv';
+import express from "express";
+import serverless from "serverless-http";
+import dotenv from "dotenv";
 import cors from "cors";
+
+import barberRoutes from "./routes/barber.js";
+import serviceRoutes from "./routes/service.js";
+import appointmentRoutes from "./routes/appointment.js";
 
 dotenv.config();
 
 const app = express();
-
-const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// TODO : Import and use user routes
-// app.use('/user', _)  
+// Подключаем роуты
+app.use("/barber", barberRoutes);
+app.use("/service", serviceRoutes);
+app.use("/appointment", appointmentRoutes);
 
-app.use('/barber', barberRoutes)  
+// 🔹 Если локально
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
 
-app.use("/servise", serviceRoutes);  
-
-app.use("/appointment", appointmentRoutes);  
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// 🔹 Если на Vercel (serverless)
+export default serverless(app);
