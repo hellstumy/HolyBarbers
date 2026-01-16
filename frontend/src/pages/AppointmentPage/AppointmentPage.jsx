@@ -6,9 +6,10 @@ import PrimaryButton from '../../UI/Buttons/PrimaryButton.jsx';
 import { barbersApi } from "../../../api/barbers.api.js";
 import { servicesApi } from '../../../api/services.api.js';
 import { appointmentsApi } from '../../../api/appointments.api.js';
-
+import { useTranslation } from "react-i18next";
 
 export default function AppointmentPage(){
+  const { t } = useTranslation();
 const openingHours = {
   1: { start: "10:00", end: "20:00" }, // Poniedziałek (Monday)
   2: { start: "10:00", end: "20:00" }, // Wtorek
@@ -38,7 +39,7 @@ const openingHours = {
 
     const handleCreateAppointment = async () => {
       if (!master || !selectedHaircut || !date || !time || !name || !phone) {
-        alert("Заполните все поля");
+        alert(`${t("appointment.alerts.fillAllFields")}`);
         return;
       }
 
@@ -54,7 +55,7 @@ const openingHours = {
 
         console.log(response)
 
-        alert("Запись успешно создана!");
+        alert(`${t("appointment.alerts.success")}`);
         // clean form
         setMaster(null);
         setSelectedHaircut(null);
@@ -64,22 +65,19 @@ const openingHours = {
         setPhone("");
       } catch (err) {
         console.error(err);
-        alert("Ошибка при создании записи");
+        alert(`${t("appointment.alerts.error")}`);
       }
     };
 
 
     return (
       <section className="AppointmentPage">
-        <p className="subtittle">ОНЛАЙН ЗАПИСЬ</p>
-        <h2>Запись на услуги</h2>
-        <p>
-          Выберите удобное время, мастера и услугу. Запись подтверждается
-          мгновенно.
-        </p>
+        <p className="subtittle">{t("appointment.subtitle")}</p>
+        <h2>{t("appointment.title")}</h2>
+        <p>{t("appointment.description")}</p>
         <div className="form">
           <div className="form-select">
-            <p>ВЫБЕРИТЕ УСЛУГУ</p>
+            <p>{t("appointment.chooseService")}</p>
             <Select
               value={selectedHaircut}
               onChange={(e) => setSelectedHaircut(e.target.value)}
@@ -92,7 +90,7 @@ const openingHours = {
             </Select>
           </div>
           <div className="form-select">
-            <p>ВЫБЕРИТЕ МАСТЕРА</p>
+            <p>{t("appointment.chooseMaster")}</p>
             <div className="masters-list">
               {barbers.map((b) => {
                 return (
@@ -112,7 +110,7 @@ const openingHours = {
             </div>
           </div>
           <div className="form-select">
-            <p>ДАТА</p>
+            <p>{t("appointment.date")}</p>
             <TextInput
               type="date"
               value={date}
@@ -120,9 +118,7 @@ const openingHours = {
                 const selectedDate = new Date(e.target.value);
                 const day = selectedDate.getDay();
                 if (!openingHours[day]) {
-                  alert(
-                    "Выбраный день закрыт! Пожалуйста, выберите другой день."
-                  );
+                  alert(`${t("appointment.alerts.dayClosed")}`);
                   setDate(null);
                 } else {
                   setDate(e.target.value);
@@ -132,25 +128,25 @@ const openingHours = {
             />
           </div>
           <div className="form-select">
-            <p>ВРЕМЯ</p>
+            <p>{t("appointment.time")}</p>
             <TextInput
               type="time"
               value={time}
               onChange={(e) => {
                 if (!date) {
-                  alert("Сначала выберите дату");
+                  alert(`${t("appointment.alerts.selectDateFirst")}`);
                   return;
                 }
                 const selectedTime = e.target.value;
                 const day = new Date(date).getDay();
                 const hours = openingHours[day];
                 if (!hours) {
-                  alert("Этот день закрыт!");
+                  alert(`${t("appointment.alerts.dayClosed")}`);
                   setTime(null);
                   return;
                 }
                 if (selectedTime < hours.start || selectedTime > hours.end) {
-                  alert(`Выберите время между ${hours.start} и ${hours.end}`);
+                  alert(`Select time from ${hours.start} to ${hours.end}`);
                   setTime(null);
                 } else {
                   setTime(selectedTime);
@@ -160,16 +156,16 @@ const openingHours = {
           </div>
           <div className="form-select">
             <div>
-              Имя:
+              {t("appointment.name")}:
               <TextInput
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder={"Боб"}
+                placeholder={"Jan Pawel"}
               />
             </div>
 
             <div>
-              Телефон:
+              {t("appointment.phone")}:
               <TextInput
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -179,11 +175,10 @@ const openingHours = {
           </div>
           <div className="form-action">
             <PrimaryButton onClick={handleCreateAppointment}>
-              ПОДТВЕРДИТЬ ЗАПИСЬ
+              {t("appointment.submit")}
             </PrimaryButton>
           </div>
         </div>
-        <p>{`Name:${name} ,Phone:${phone} , Date:${date} , Time:${time} , Master:${master} , Service:${selectedHaircut} ,`}</p>
       </section>
     );
 }

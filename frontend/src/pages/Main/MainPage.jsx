@@ -12,9 +12,14 @@ import   {  barbersApi }  from "../../../api/barbers.api";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import { useEffect, useState } from "react";
+import useStore from "../../store/store";
+import { useTranslation } from "react-i18next";
 
 
 export default function MainPage() {
+  const { t } = useTranslation();
+  const {setAppointmentPage} = useStore();
+
   const [barbers, setBarbers] = useState([]);
 
   useEffect(() => {
@@ -24,52 +29,38 @@ export default function MainPage() {
     return (
       <main>
         <section className="main-hero">
-          <div className="hero-content">
-            <p className="subtittle">HOLY BARBERS</p>
-            <h1>
-              Искусство <br />
-              создавать
-              <br /> стиль
-            </h1>
-            <p>
-              Премиальный барбершоп, где традиции встречаются с современностью.
-              Индивидуальный подход к каждому клиенту.
-            </p>
-            <div className="hero-buttons">
-              <SecondaryButton>Записаться онлайн</SecondaryButton>
-              <a href="tel:+48571371493" className="hero-tell">
-                +48 (571) 371 493
-              </a>
+          <div className="container">
+            <div className="hero-content">
+              <p className="subtittle">HOLY BARBERS</p>
+              <h1>{t("mainPage.hero.title")}</h1>
+              <p>{t("mainPage.hero.description")}</p>
+              <div className="hero-buttons">
+                <SecondaryButton onClick={setAppointmentPage}>
+                  {t("mainPage.hero.button")}
+                </SecondaryButton>
+                <a href="tel:+48571371493" className="hero-tell">
+                  +48 (571) 371 493
+                </a>
+              </div>
             </div>
           </div>
         </section>
         <section className="aboutUs">
           <div className="container">
             <div className="aboutUs-content">
-              <p className="subtittle">О БАРБЕРШОПЕ</p>
-              <h2>
-                Премиум-класс <br />
-                для настоящих ценителей
-              </h2>
-              <p>
-                Holy Barbers — это место, где каждая деталь продумана для вашего
-                комфорта. Мы создали пространство, объединяющее традиции
-                классического барберинга и современные тенденции стиля.
-              </p>
-              <p>
-                Наша команда состоит из профессионалов своего дела, которые
-                постоянно совершенствуют свое мастерство и следят за мировыми
-                трендами в индустрии барберинга.
-              </p>
+              <p className="subtittle">{t("mainPage.about.subtitle")}</p>
+              <h2>{t("mainPage.about.title")}</h2>
+              <p>{t("mainPage.about.description1")}</p>
+              <p>{t("mainPage.about.description2")}</p>
               <div className="aboutUs-info">
                 <div className="aboutUs-info-item">
                   <h3>5+</h3>
-                  <p>Лет опыта в индустрии</p>
+                  <p>{t("mainPage.about.stats.experience")}</p>
                 </div>
                 <div className="aboutUs-info-line"></div>
                 <div className="aboutUs-info-item">
                   <h3>1000+</h3>
-                  <p>Довольных клиентов</p>
+                  <p>{t("mainPage.about.stats.clients")}</p>
                 </div>
               </div>
             </div>
@@ -79,128 +70,134 @@ export default function MainPage() {
                   <img className="aboutUs-img" src={reward} alt="" />
                 </div>
 
-                <h5>Мастерство</h5>
-                <p>Опытные барберы с международными сертификатами</p>
+                <h5>{t("mainPage.about.cards.skill.title")}</h5>
+                <p>{t("mainPage.about.cards.skill.description")}</p>
               </div>
               <div className="aboutus-card">
                 <div className="aboutUs-icon">
                   <img className="aboutUs-img" src={people} alt="" />
                 </div>
 
-                <h5>Индивидуальность</h5>
-                <p>Персональный подход к каждому клиенту</p>
+                <h5>{t("mainPage.about.cards.individuality.title")}</h5>
+                <p>{t("mainPage.about.cards.individuality.description")}</p>
               </div>
               <div className="aboutus-card">
                 <div className="aboutUs-icon">
                   <img className="aboutUs-img" src={time} alt="" />
                 </div>
 
-                <h5>Комфорт</h5>
-                <p>Запись онлайн без очередей и ожидания</p>
+                <h5>{t("mainPage.about.cards.comfort.title")}</h5>
+                <p>{t("mainPage.about.cards.comfort.description")}</p>
               </div>
               <div className="aboutus-card">
                 <div className="aboutUs-icon">
                   <img className="aboutUs-img" src={star} alt="" />
                 </div>
 
-                <h5>Качество</h5>
-                <p>Только премиальная косметика и инструменты</p>
+                <h5>{t("mainPage.about.cards.quality.title")}</h5>
+                <p>{t("mainPage.about.cards.quality.description")}</p>
               </div>
             </div>
           </div>
         </section>
         <section className="OurServise">
           <div className="container">
-            <p className="subtittle">УСЛУГИ</p>
-            <h2>Наши услуги</h2>
-            <p>
-              Широкий спектр барберских услуг премиум-класса. Каждая процедура{" "}
-              <br />
-              выполняется с максимальным вниманием к деталям.
-            </p>
+            <p className="subtittle">{t("mainPage.services.subtitle")}</p>
+            <h2>{t("mainPage.services.title")}</h2>
+            <p>{t("mainPage.services.description")}</p>
             <div className="OurServise_cards">
               <div className="OurServise_card">
                 <div className="OurServise_img_container">
                   <img src={siccers} alt="" />
                 </div>
-                <h5>Strzyżenie włosów (Haircut)</h5>
-                <p>Профессиональная стрижка с учетом формы лица и типа волос</p>
+                <h5>{t("mainPage.services.cards.haircut.title")}</h5>
+                <p>{t("mainPage.services.cards.haircut.description")}</p>
                 <span className="OurSerice_line"></span>
                 <div className="OurServide_card_info">
-                  <p>45 мин</p>
-                  <p>90 zł</p>
+                  <p>{t("mainPage.services.cards.haircut.time")}</p>
+                  <p>{t("mainPage.services.cards.haircut.price")}</p>
                 </div>
               </div>
               <div className="OurServise_card">
                 <div className="OurServise_img_container">
                   <img src={person} alt="" />
                 </div>
-                <h5>Broda (Beard Trim)</h5>
-                <p>Придание формы и ухоженного вида вашей бороде</p>
+                <h5>{t("mainPage.services.cards.beard.title")}</h5>
+                <p>{t("mainPage.services.cards.beard.description")}</p>
                 <span className="OurSerice_line"></span>
                 <div className="OurServide_card_info">
-                  <p>30 мин</p>
-                  <p>60 zł</p>
+                  <p>{t("mainPage.services.cards.beard.time")}</p>
+                  <p>{t("mainPage.services.cards.beard.price")}</p>
                 </div>
               </div>
               <div className="OurServise_card">
                 <div className="OurServise_img_container">
                   <img src={star} alt="" />
                 </div>
-                <h5>Kombo (strzyżenie + broda)</h5>
-                <p>Стрижка + борода + уход за кожей лица</p>
+                <h5>{t("mainPage.services.cards.combo.title")}</h5>
+                <p>{t("mainPage.services.cards.combo.description")}</p>
                 <span className="OurSerice_line"></span>
                 <div className="OurServide_card_info">
-                  <p>75 мин</p>
-                  <p>120 zł</p>
+                  <p>{t("mainPage.services.cards.combo.time")}</p>
+                  <p>{t("mainPage.services.cards.combo.price")}</p>
                 </div>
               </div>
               <div className="OurServise_card">
                 <div className="OurServise_img_container">
                   <img src={magic} alt="" />
                 </div>
-                <h5>Tata + syn do 10 lat</h5>
-                <p>Традиционное бритье опасной бритвой с горячим компрессом</p>
+                <h5>{t("mainPage.services.cards.father_son.title")}</h5>
+                <p>{t("mainPage.services.cards.father_son.description")}</p>
                 <span className="OurSerice_line"></span>
                 <div className="OurServide_card_info">
-                  <p>90 мин</p>
-                  <p>140 zł</p>
+                  <p>{t("mainPage.services.cards.father_son.time")}</p>
+                  <p>{t("mainPage.services.cards.father_son.price")}</p>
                 </div>
               </div>
             </div>
-            <SecondaryButton  className="secondary-button">
-              ЗАПИСАТЬСЯ НА УСЛУГУ
+            <SecondaryButton
+              onClick={setAppointmentPage}
+              className="secondary-button"
+            >
+              {t("mainPage.services.button")}
             </SecondaryButton>
           </div>
         </section>
         <section className="OurBarbers">
-          <div className="container">
-            <p className="subtittle">КОМАНДА</p>
-            <h2>Наши мастера</h2>
-            <p>
-              Каждый из наших барберов — профессионал с многолетним опытом и{" "}
-              <br />
-              уникальным стилем работы.
-            </p>
-            <div className="OurBarbers_carusel">
-              <Splide
-                options={{
-                  perPage: 3,
-                  rewind: true,
-                }}
-                aria-label="Barbers"
-              >
-                {barbers.map((b) => (
-                  <SplideSlide>
-                    <div className="barbers-slides">
-                      <img src={b.img_url} alt="Image 1" />
-                      <h4 className="Barber-name">{b.name}</h4>
-                      <p>{`Опыт работы: ${b.experiance} месяцев`}</p>
-                    </div>
-                  </SplideSlide>
-                ))}
-              </Splide>
-            </div>
+          <p className="subtittle">{t("mainPage.team.subtitle")}</p>
+          <h2>{t("mainPage.team.title")}</h2>
+          <p>{t("mainPage.team.description")}</p>
+          <div className="OurBarbers_carusel">
+            <Splide
+              options={{
+                perPage: 3,
+                gap: "24px",
+                rewind: true,
+                breakpoints: {
+                  1024: {
+                    perPage: 2,
+                  },
+                  645: {
+                    perPage: 1,
+                  },
+                },
+              }}
+              aria-label="Barbers"
+            >
+              {barbers.map((b) => (
+                <SplideSlide key={b.id || b.name}>
+                  <div className="barber-card">
+                    <img src={b.img_url} alt={b.name} />
+                    <h4 className="Barber-name">{b.name}</h4>
+                    <p></p>
+                    <p>
+                      {t("mainPage.team.experience_label")}{" "}
+                      {`${b.experiance} mounths`}
+                    </p>
+                  </div>
+                </SplideSlide>
+              ))}
+            </Splide>
           </div>
         </section>
       </main>

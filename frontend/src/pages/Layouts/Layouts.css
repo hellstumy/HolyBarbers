@@ -1,72 +1,117 @@
-/* Header */
+/* Header базовый */
+/* ===== HEADER ===== */
 header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #FFF;
+    background: #fff;
+    padding: 15px;
+
 }
 
-.logo-container{
+/* ===== LOGO ===== */
+.logo-container {
     display: flex;
     align-items: center;
 }
-.logo-container img{
+
+.logo-container img {
     width: 60px;
     height: 60px;
     margin-right: 12px;
 }
-.logo-container p{
-    color: #0A0A0A;
-        font-size: 24px;
-        font-style: normal;
-        font-weight: 700;
-        letter-spacing: 0.35px;
+
+.logo-container p {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0a0a0a;
 }
-header nav ul{
+
+/* ===== NAV ===== */
+.main-nav {
+    display: flex;
+}
+
+.main-nav ul {
     display: flex;
     align-items: center;
     gap: 96px;
 }
-header nav ul li{
+
+.main-nav li {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    cursor: pointer;
 }
-header nav ul li a{
-    color: rgba(0, 0, 0, 0.60);
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        letter-spacing: 0.35px;
-        padding-bottom: 8px;
-        transition: color 0.3s;
-        cursor: pointer;
-    display: block;
+
+.main-nav li a {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+    padding-bottom: 8px;
+    transition: color 0.3s;
 }
-header nav ul li a:hover{
-    color: #000;
-    }
-header nav ul li span{
-    display: none;
-    margin-top: 8px;
-    width: 54.65px;
+
+/* Линия */
+.main-nav li span {
+    width: 54px;
     height: 2px;
     background: linear-gradient(90deg, #000, #000 50%, transparent);
-    overflow: hidden;
     border-radius: 1px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-header nav ul li a:hover ~ span{
-    display: block;
-    animation: spanAnimation 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-.active a{
+
+/* ===== HOVER + ACTIVE (ОБЩАЯ ЛОГИКА) ===== */
+.main-nav li:hover a,
+.main-nav li.active a {
     color: #000;
-        font-weight: 600;
+    font-weight: 600;
 }
-.active span{
-    display: block;
-    animation: none;
+
+.main-nav li:hover span,
+.main-nav li.active span {
+    transform: scaleX(1);
+    opacity: 1;
+}
+
+/* ===== LANGUAGE ===== */
+.language-select {
+    margin-right: 8px;
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+/* ===== BURGER ===== */
+.burger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.burger span {
+    width: 35px;
+    height: 3px;
+    background: #000;
+    transition: all 0.3s ease;
+}
+
+.burger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.burger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
 }
 
 /* Footer */
@@ -154,5 +199,55 @@ footer{
         width: 54.65px;
         opacity: 1;
         transform: scaleX(1);
+    }
+}
+
+
+
+@media(max-width:645px){
+        .footer-content{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+}
+
+@media (max-width: 780px) {
+    .burger {
+        display: flex;
+    }
+
+    .main-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        background-color: #fff;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+    }
+
+    .main-nav.open {
+        transform: translateY(0);
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .main-nav li a {
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    header .primary-button {
+        display: none;
     }
 }

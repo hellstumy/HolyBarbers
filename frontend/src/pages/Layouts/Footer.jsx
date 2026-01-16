@@ -3,16 +3,15 @@ import facebook from '../../assets/icons/facebook.svg';
 import phone from '../../assets/icons/phone.svg';
 import address from '../../assets/icons/address.svg';
 import mail from '../../assets/icons/mail.svg';
+import { useTranslation } from "react-i18next";
 export default function Footer(){
+  const { t } = useTranslation();
     return (
       <footer>
         <div className="footer-content">
           <div className="footer-main">
             <h3>Holy Barbers</h3>
-            <p>
-              Премиальный барбершоп для настоящих ценителей стиля и качества.
-              Создаем не просто стрижки, а образы.
-            </p>
+            <p>{t("footer.description")}</p>
             <div className="footer-socials">
               <a
                 href="https://www.instagram.com/holybarbers_katowice/"
@@ -31,7 +30,7 @@ export default function Footer(){
             </div>
           </div>
           <div className="footer-contact">
-            <h3>Контакты</h3>
+            <h3>{t("footer.contacts")}</h3>
             <div className="footer-contact-item">
               <img src={phone} alt="Phone" />
               <a href="tel:+48571371493">+48 (571) 371 493</a>
@@ -54,20 +53,20 @@ export default function Footer(){
             </div>
           </div>
           <div className="footer-worktime">
-            <h3>Время работы</h3>
+            <h3>{t("footer.worktime")}</h3>
             <div className="footer-worktime-item">
-              <p>Понедельник - Пятница: 9:00 - 19:00</p>
+              <p>{t("footer.workdays.mon_fri")}</p>
             </div>
             <div className="footer-worktime-item">
-              <p>Суббота: 9:00 - 17:00</p>
+              <p>{t("footer.workdays.sat")}</p>
             </div>
             <div className="footer-worktime-item">
-              <p>Воскресенье: Выходной</p>
+              <p>{t("footer.workdays.sun")}</p>
             </div>
           </div>
         </div>
         <p className="footer-copyright">
-          <span>©</span> 2026 Holy Barbers. All rights reserved.
+        {t("footer.copyright")}
         </p>
       </footer>
     );

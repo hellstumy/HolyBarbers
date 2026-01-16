@@ -1,0 +1,208 @@
+{
+    "header": {
+        "home": "Strona główna",
+        "appointment": "Wizyta",
+        "findAppointment": "Znajdź wizytę",
+        "book": "ZAREZERWUJ"
+    },
+    "mainPage": {
+        "hero": {
+            "subtitle": "HOLY BARBERS",
+            "title": "Sztuka Tworzenia Stylu",
+            "description": "Premium barbershop, gdzie tradycja spotyka nowoczesność. Indywidualne podejście do każdego klienta.",
+            "button": "Zarezerwuj online",
+            "phone": "+48 (571) 371 493"
+        },
+        "about": {
+            "subtitle": "O BARBERSHOPIE",
+            "title": "Klasa Premium dla prawdziwych koneserów",
+            "description1": "Holy Barbers to miejsce, gdzie każdy szczegół jest przemyślany dla Twojego komfortu. Stworzyliśmy przestrzeń łączącą tradycje klasycznego barberingu i nowoczesne trendy stylu.",
+            "description2": "Nasz zespół składa się z profesjonalistów, którzy stale doskonalą swoje umiejętności i śledzą światowe trendy w barberingu.",
+            "stats": {
+                "experience": "Lat doświadczenia w branży",
+                "clients": "Zadowolonych klientów"
+            },
+            "cards": {
+                "skill": {
+                    "title": "Umiejętność",
+                    "description": "Doświadczeni barberzy z międzynarodowymi certyfikatami"
+                },
+                "individuality": {
+                    "title": "Indywidualność",
+                    "description": "Osobiste podejście do każdego klienta"
+                },
+                "comfort": {
+                    "title": "Komfort",
+                    "description": "Rezerwacja online bez kolejek i oczekiwania"
+                },
+                "quality": {
+                    "title": "Jakość",
+                    "description": "Tylko premium kosmetyki i narzędzia"
+                }
+            }
+        },
+        "services": {
+            "subtitle": "USŁUGI",
+            "title": "Nasze usługi",
+            "description": "Szeroki zakres usług barberskich premium. Każdy zabieg wykonywany jest z najwyższą starannością.",
+            "cards": {
+                "haircut": {
+                    "title": "Strzyżenie włosów",
+                    "description": "Profesjonalne strzyżenie uwzględniające kształt twarzy i rodzaj włosów",
+                    "time": "45 min",
+                    "price": "90 zł"
+                },
+                "beard": {
+                    "title": "Broda",
+                    "description": "Nadanie kształtu i zadbanego wyglądu Twojej brodzie",
+                    "time": "30 min",
+                    "price": "60 zł"
+                },
+                "combo": {
+                    "title": "Kombo (strzyżenie + broda)",
+                    "description": "Strzyżenie + broda + pielęgnacja skóry twarzy",
+                    "time": "75 min",
+                    "price": "120 zł"
+                },
+                "father_son": {
+                    "title": "Tata + syn do 10 lat",
+                    "description": "Wspólne strzyżenie 'Ojciec + Syn'",
+                    "time": "90 min",
+                    "price": "140 zł"
+                }
+            },
+            "button": "ZAREZERWUJ USŁUGĘ"
+        },
+        "team": {
+            "subtitle": "ZESPÓŁ",
+            "title": "Nasi barberzy",
+            "description": "Każdy z naszych barberów to profesjonalista z wieloletnim doświadczeniem i unikalnym stylem pracy.",
+            "experience_label": "Doświadczenie"
+        }
+    },
+    "appointment": {
+        "subtitle": "REZERWACJA ONLINE",
+        "title": "Rezerwacja usługi",
+        "description": "Wybierz dogodny czas, barbera i usługę. Rezerwacja jest potwierdzana natychmiast.",
+        "chooseService": "WYBIERZ USŁUGĘ",
+        "chooseMaster": "WYBIERZ BARBERA",
+        "date": "DATA",
+        "time": "GODZINA",
+        "name": "Imię",
+        "phone": "Telefon",
+        "submit": "POTWIERDŹ REZERWACJĘ",
+        "alerts": {
+            "fillAllFields": "Proszę wypełnić wszystkie pola",
+            "selectDateFirst": "Proszę najpierw wybrać datę",
+            "dayClosed": "Wybrany dzień jest zamknięty! Proszę wybrać inny dzień.",
+            "timeRange": "Proszę wybrać godzinę między {{start}} a {{end}}",
+            "success": "Rezerwacja została pomyślnie utworzona!",
+            "error": "Błąd podczas tworzenia rezerwacji"
+        }
+    },
+    "findAppointment": {
+        "subtitle": "ZNAJDŹ REZERWACJĘ",
+        "title": "Znajdź swoją rezerwację",
+        "searchByPhone": "SZUKAJ PO NUMERZE TELEFONU",
+        "placeholder": "(888) 123 123 321",
+        "button": "SZUKAJ",
+        "foundAppointments": "Znalezione rezerwacje"
+    },
+    "foundAppointment": {
+        "master": "Barber",
+        "service": "Usługa",
+        "date": "Data",
+        "time": "Godzina"
+    },
+    "adminPage": {
+        "subtitle": "PANEL ADMINISTRACYJNY",
+        "title": "PANEL ADMINISTRACYJNY",
+        "tabs": {
+            "services": "Usługi",
+            "barbers": "Barberzy",
+            "appointments": "Rezerwacje"
+        }
+    },
+    "adminAppointment": {
+        "modal": {
+            "create": "Utwórz rezerwację",
+            "edit": "Edytuj rezerwację",
+            "servicePlaceholder": "Wybierz usługę",
+            "barberPlaceholder": "Wybierz barbera",
+            "clientName": "Imię klienta",
+            "clientContact": "Telefon klienta",
+            "date": "Data",
+            "time": "Godzina",
+            "submitCreate": "Utwórz",
+            "submitEdit": "Zapisz"
+        },
+        "title": "Zarządzanie rezerwacjami",
+        "totalAppointments": "Łączna liczba rezerwacji: ",
+        "createButton": "Utwórz rezerwację",
+        "table": {
+            "service": "Usługa",
+            "barber": "Barber",
+            "client": "Klient",
+            "phone": "Telefon",
+            "datetime": "Data / Godzina",
+            "actions": "Akcje"
+        }
+    },
+    "adminBarbers": {
+        "modal": {
+            "create": "Dodaj Barbera",
+            "edit": "Edytuj Barbera",
+            "namePlaceholder": "Imię Barbera",
+            "experiencePlaceholder": "Doświadczenie w pracy (miesiące)",
+            "imagePlaceholder": "URL obrazu",
+            "isActive": "Aktywny?",
+            "submitCreate": "Dodaj",
+            "submitEdit": "Zapisz"
+        },
+        "title": "Zarządzanie Barberami",
+        "addButton": "Dodaj Barbera",
+        "card": {
+            "months": " miesięcy",
+            "active": "Aktywny",
+            "inactive": "Nieaktywny",
+            "edit": "Edytuj",
+            "delete": "Usuń"
+        }
+    },
+    "adminService": {
+        "modal": {
+            "create": "Utwórz usługę",
+            "edit": "Edytuj usługę",
+            "namePlaceholder": "Nazwa usługi",
+            "pricePlaceholder": "Cena usługi",
+            "durationPlaceholder": "Czas trwania usługi",
+            "submitCreate": "Utwórz",
+            "submitEdit": "Edytuj"
+        },
+        "title": "Zarządzanie usługami",
+        "addButton": "Utwórz usługę",
+        "table": {
+            "name": "NAZWA",
+            "price": "CENA",
+            "duration": "CZAS",
+            "actions": "DZIAŁANIA"
+        }
+    },
+    
+     "footer": {
+        "title": "Holy Barbers",
+        "description": "Premium barbershop dla prawdziwych koneserów stylu i jakości. Tworzymy nie tylko fryzury, ale całe wizerunki.",
+        "contacts": "Kontakt",
+        "phone": "+48 (571) 371 493",
+        "address": "Wiosny Ludów 11, 40-374 Katowice",
+        "booking": "Booksy",
+        "worktime": "Godziny pracy",
+        "workdays": {
+            "mon_fri": "Poniedziałek - Piątek: 9:00 - 19:00",
+            "sat": "Sobota: 9:00 - 17:00",
+            "sun": "Niedziela: Zamknięte"
+        },
+        "copyright": "© 2026 Holy Barbers. Wszelkie prawa zastrzeżone."
+    }
+
+}

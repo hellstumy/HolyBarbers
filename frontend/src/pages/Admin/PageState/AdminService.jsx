@@ -7,8 +7,11 @@ import TableUI from "../../../UI/Sheets.jsx";
 import useStore from "../../../store/store.js";
 import { servicesApi } from "../../../../api/services.api.js";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function AdminService() {
+  const { t } = useTranslation();   
+
   const [services, setServices] = useState([]);
   const [modalPage, setModalPage] = useState("");
   const [name, setName] = useState("");
@@ -98,43 +101,49 @@ export default function AdminService() {
     <div className="service-admin">
       <MyModal
         Tittle={
-          modalPage === "EditModal" ? "Редактировать услугу" : "Создать услугу"
+          modalPage === "EditModal"
+            ? `${t("adminService.modal.edit")}`
+            : `${t("adminService.modal.create")}`
         }
       >
         <TextInput
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Имя услуги"
+          placeholder={t("adminService.modal.namePlaceholder")}
         />
         <TextInput
           value={price}
           onChange={(e) => setPrice(e.target.value)}
-          placeholder="Цена услуги"
+          placeholder={t("adminService.modal.pricePlaceholder")}
         />
         <TextInput
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
-          placeholder="Длительность услуги"
+          placeholder={t("adminService.modal.durationPlaceholder")}
         />
 
         <PrimaryButton
           onClick={modalPage === "EditModal" ? handleUpdate : handleCreate}
         >
-          {modalPage === "EditModal" ? "Редактировать" : "Создать"}
+          {modalPage === "EditModal"
+            ? `${t("adminService.modal.submitEdit")}`
+            : `${t("adminService.modal.submitCreate")}`}
         </PrimaryButton>
       </MyModal>
 
       <div className="admin-tittle">
-        <h3>Управление услугами</h3>
-        <PrimaryButton onClick={createModalPage}>СОЗДАТЬ УСЛУГУ</PrimaryButton>
+        <h3>{t("adminService.title")}</h3>
+        <PrimaryButton onClick={createModalPage}>
+          {t("adminService.addButton")}
+        </PrimaryButton>
       </div>
 
       <TableUI>
         <div>
-          <div>НАЗВАНИЕ</div>
-          <div>ЦЕНА</div>
-          <div>ВРЕМЯ</div>
-          <div>ДЕЙСТВИЯ</div>
+          <div>{t("adminService.table.name")}</div>
+          <div>{t("adminService.table.price")}</div>
+          <div>{t("adminService.table.duration")}</div>
+          <div>{t("adminService.table.actions")}</div>
         </div>
         {services.map((s) => (
           <div key={s.id} className="table-data">

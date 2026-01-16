@@ -7,12 +7,13 @@ import MyModal from "../../../UI/Modal.jsx";
 import TextInput from "../../../UI/Inputs/TextInput";
 import Select from "../../../UI/Inputs/Select";
 import PrimaryButton from "../../../UI/Buttons/PrimaryButton";
-
+import { useTranslation } from "react-i18next";
 import { appointmentsApi } from "../../../../api/appointments.api.js";
 import { servicesApi } from "../../../../api/services.api.js";
 import { barbersApi } from "../../../../api/barbers.api.js";
 
 export default function AdminAppointment() {
+  const {t} = useTranslation()
   const { openModal, closeModal } = useStore();
 
   const [appointments, setAppointments] = useState([]);
@@ -140,12 +141,20 @@ export default function AdminAppointment() {
 
   return (
     <div className="admin-appointment">
-      <MyModal Tittle={current ? "Редактировать запись" : "Создать запись"}>
+      <MyModal
+        Tittle={
+          current
+            ? `${t("adminAppointment.modal.edit")}`
+            : `${t("adminAppointment.modal.create")}`
+        }
+      >
         <Select
           value={serviceId}
           onChange={(e) => setServiceId(e.target.value)}
         >
-          <option value="">Выберите услугу</option>
+          <option value="">
+            {t("adminAppointment.modal.servicePlaceholder")}
+          </option>
           {services.map((s) => (
             <option key={s.id} value={s.id}>
               {s.name}
@@ -154,7 +163,9 @@ export default function AdminAppointment() {
         </Select>
 
         <Select value={barberId} onChange={(e) => setBarberId(e.target.value)}>
-          <option value="">Выберите барбера</option>
+          <option value="">
+            {t("adminAppointment.modal.barberPlaceholder")}
+          </option>
           {barbers.map((b) => (
             <option key={b.id} value={b.id}>
               {b.name}
@@ -163,13 +174,13 @@ export default function AdminAppointment() {
         </Select>
 
         <TextInput
-          placeholder="Имя клиента"
+          placeholder={t("adminAppointment.modal.clientName")}
           value={clientName}
           onChange={(e) => setClientName(e.target.value)}
         />
 
         <TextInput
-          placeholder="Номер клиента"
+          placeholder={t("adminAppointment.modal.clientContact")}
           value={clientContact}
           onChange={(e) => setClientContact(e.target.value)}
         />
@@ -186,24 +197,40 @@ export default function AdminAppointment() {
         />
 
         <PrimaryButton onClick={current ? handleUpdate : handleCreate}>
-          {current ? "Сохранить" : "Создать"}
+          {current
+            ? `${t("adminAppointment.modal.submitCreate")}`
+            : `${t("adminAppointment.modal.submitEdit")}`}
         </PrimaryButton>
       </MyModal>
 
       <div className="admin-tittle">
-        <h3>Управление записями</h3>
-        <p>Всего записей: {appointments.length}</p>
-        <PrimaryButton onClick={openCreateModal}>Создать запись</PrimaryButton>
+        <h3>{t("adminAppointment.title")}</h3>
+        <p>
+          {t("adminAppointment.totalAppointments")} {appointments.length}
+        </p>
+        <PrimaryButton onClick={openCreateModal}>createButton</PrimaryButton>
       </div>
 
       <TableUI>
         <div className="table-tittle">
-          <div>Услуга</div>
-          <div>Барбер</div>
-          <div>Клиент</div>
-          <div>Телефон</div>
-          <div>Дата / Время</div>
-          <div>Действия</div>
+          <div>
+            {t("adminAppointment.table.service")}
+          </div>
+          <div>
+            {t("adminAppointment.table.barber")}
+          </div>
+          <div>
+            {t("adminAppointment.table.client")}
+          </div>
+          <div>
+            {t("adminAppointment.table.phone")}
+          </div>
+          <div>
+            {t("adminAppointment.table.datetime")}
+          </div>
+          <div>
+            {t("adminAppointment.table.actions")}
+          </div>
         </div>
 
         {appointments.map((a) => (

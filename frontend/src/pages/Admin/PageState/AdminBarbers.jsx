@@ -7,8 +7,10 @@ import TextInput from "../../../UI/Inputs/TextInput";
 import useStore from "../../../store/store.js";
 import { useEffect, useState } from "react";
 import { barbersApi } from "../../../../api/barbers.api.js";
+import { useTranslation } from "react-i18next";
 
 export default function AdminBarbers() {
+  const { t } = useTranslation();
   const [modalPage, setModalPage] = useState("");
   const { openModal, closeModal } = useStore();
   const [barbers, setBarbers] = useState([]);
@@ -99,28 +101,28 @@ export default function AdminBarbers() {
       <MyModal
         Tittle={
           modalPage === "EditModal"
-            ? "Редактировать Барбера"
-            : "Добавить Барбера"
+            ? `${t("adminBarbers.modal.edit")}`
+            : `${t("adminBarbers.modal.create")}`
         }
       >
         <TextInput
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Имя барбера"
+          placeholder={t("adminBarbers.modal.namePlaceholder")}
         />
         <TextInput
           type="number"
           value={experiance}
           onChange={(e) => setExperiance(e.target.value)}
-          placeholder="Опыт работы (месяц)"
+          placeholder={t("adminBarbers.modal.experiencePlaceholder")}
         />
         <TextInput
           value={img_url}
           onChange={(e) => setImg_url(e.target.value)}
-          placeholder="URL изображения"
+          placeholder={t("adminBarbers.modal.imagePlaceholder")}
         />
         <label>
-          Активность?
+          {t("adminBarbers.modal.isActive")}
           <Checkbox
             checked={isActive}
             onChange={(e) => setIsActive(e.target.checked)}
@@ -130,14 +132,16 @@ export default function AdminBarbers() {
         <PrimaryButton
           onClick={modalPage === "EditModal" ? handleUpdate : handleCreate}
         >
-          {modalPage === "EditModal" ? "Сохранить" : "Добавить"}
+          {modalPage === "EditModal"
+            ? `${t("adminBarbers.modal.submitEdit")}`
+            : `${t("adminBarbers.modal.submitCreate")}`}
         </PrimaryButton>
       </MyModal>
 
       <div className="admin-tittle">
-        <h3>Управление Барберами</h3>
+        <h3>{t("adminBarbers.title")}</h3>
         <PrimaryButton onClick={createModalPage}>
-          Добавить Барбера
+          {t("adminBarbers.addButton")}
         </PrimaryButton>
       </div>
 
@@ -147,18 +151,22 @@ export default function AdminBarbers() {
             <img src={b.img_url} alt="Barber img" />
             <p className="barber-name">{b.name}</p>
             <div className="barber-stats">
-              <p className="barber-experiance">{b.experiance} Месяцев</p>
+              <p className="barber-experiance">
+                {b.experiance} {t("adminBarbers.card.months")}
+              </p>
               <p
                 className={`barber-IsActive ${
                   b.is_active ? "barber-active" : "barber-nonActive"
                 }`}
               >
-                {b.is_active ? "Активный" : "Не активный"}
+                {b.is_active
+                  ? `${t("adminBarbers.card.active")}`
+                  : `${t("adminBarbers.card.inactive")}`}
               </p>
             </div>
             <div className="barber-buttons">
               <SecondaryButton onClick={() => editModalPage(b)}>
-                Редактировать
+                {t("adminBarbers.card.edit")}
               </SecondaryButton>
               <button onClick={() => handleDelete(b.id)}>
                 <img src={barberdel} alt="Удалить" />

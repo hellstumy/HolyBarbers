@@ -1,0 +1,206 @@
+{
+    "header": {
+        "home": "Home",
+        "appointment": "Appointment",
+        "findAppointment": "Find Appointment",
+        "book": "BOOK NOW"
+    },
+    "mainPage": {
+        "hero": {
+            "subtitle": "HOLY BARBERS",
+            "title": "The Art of Creating Style",
+            "description": "Premium barbershop where traditions meet modernity. Individual approach to every client.",
+            "button": "Book Online",
+            "phone": "+48 (571) 371 493"
+        },
+        "about": {
+            "subtitle": "ABOUT THE BARBERSHOP",
+            "title": "Premium Class for True Connoisseurs",
+            "description1": "Holy Barbers is a place where every detail is designed for your comfort. We created a space that combines classic barbering traditions with modern style trends.",
+            "description2": "Our team consists of professionals who constantly improve their skills and follow global trends in barbering.",
+            "stats": {
+                "experience": "Years of experience in the industry",
+                "clients": "Satisfied clients"
+            },
+            "cards": {
+                "skill": {
+                    "title": "Skill",
+                    "description": "Experienced barbers with international certificates"
+                },
+                "individuality": {
+                    "title": "Individuality",
+                    "description": "Personal approach to every client"
+                },
+                "comfort": {
+                    "title": "Comfort",
+                    "description": "Online booking without queues or waiting"
+                },
+                "quality": {
+                    "title": "Quality",
+                    "description": "Only premium cosmetics and tools"
+                }
+            }
+        },
+        "services": {
+            "subtitle": "SERVICES",
+            "title": "Our Services",
+            "description": "A wide range of premium barber services. Every procedure is performed with maximum attention to detail.",
+            "cards": {
+                "haircut": {
+                    "title": "Strzyżenie włosów (Haircut)",
+                    "description": "Professional haircut taking into account face shape and hair type",
+                    "time": "45 min",
+                    "price": "90 zł"
+                },
+                "beard": {
+                    "title": "Broda (Beard Trim)",
+                    "description": "Shaping and grooming your beard",
+                    "time": "30 min",
+                    "price": "60 zł"
+                },
+                "combo": {
+                    "title": "Kombo (haircut + beard)",
+                    "description": "Haircut + beard + facial skin care",
+                    "time": "75 min",
+                    "price": "120 zł"
+                },
+                "father_son": {
+                    "title": "Father + son up to 10 years",
+                    "description": "Joint haircut 'Father + Son'",
+                    "time": "90 min",
+                    "price": "140 zł"
+                }
+            },
+            "button": "BOOK A SERVICE"
+        },
+        "team": {
+            "subtitle": "TEAM",
+            "title": "Our Barbers",
+            "description": "Each of our barbers is a professional with many years of experience and a unique working style.",
+            "experience_label": "Work experience"
+        }
+    },
+    "appointment": {
+        "subtitle": "ONLINE BOOKING",
+        "title": "Service Appointment",
+        "description": "Choose a convenient time, barber, and service. Booking is confirmed instantly.",
+        "chooseService": "CHOOSE A SERVICE",
+        "chooseMaster": "CHOOSE A BARBER",
+        "date": "DATE",
+        "time": "TIME",
+        "name": "Name",
+        "phone": "Phone",
+        "submit": "CONFIRM APPOINTMENT",
+        "alerts": {
+            "fillAllFields": "Please fill in all fields",
+            "selectDateFirst": "Please select a date first",
+            "dayClosed": "Selected day is closed! Please choose another day.",
+            "timeRange": "Please select a time between {{start}} and {{end}}",
+            "success": "Appointment successfully created!",
+            "error": "Error while creating appointment"
+        }
+    },
+    "findAppointment": {
+        "subtitle": "FIND APPOINTMENT",
+        "title": "Find Your Appointment",
+        "searchByPhone": "SEARCH BY PHONE NUMBER",
+        "placeholder": "(888) 123 123 321",
+        "button": "FIND",
+        "foundAppointments": "Found Appointments"
+    },
+    "foundAppointment": {
+        "master": "Barber",
+        "service": "Service",
+        "date": "Date",
+        "time": "Time"
+    },
+    "adminPage": {
+        "subtitle": "ADMIN PANEL",
+        "title": "ADMIN PANEL",
+        "tabs": {
+            "services": "Services",
+            "barbers": "Barbers",
+            "appointments": "Appointments"
+        }
+    },
+    "adminAppointment": {
+        "modal": {
+            "create": "Create Appointment",
+            "edit": "Edit Appointment",
+            "servicePlaceholder": "Select a service",
+            "barberPlaceholder": "Select a barber",
+            "clientName": "Client Name",
+            "clientContact": "Client Phone",
+            "date": "Date",
+            "time": "Time",
+            "submitCreate": "Create",
+            "submitEdit": "Save"
+        },
+        "title": "Appointments Management",
+        "totalAppointments": "Total Appointments: ",
+        "createButton": "Create Appointment",
+        "table": {
+            "service": "Service",
+            "barber": "Barber",
+            "client": "Client",
+            "phone": "Phone",
+            "datetime": "Date / Time",
+            "actions": "Actions"
+        }
+    },
+    "adminBarbers": {
+        "modal": {
+            "create": "Add Barber",
+            "edit": "Edit Barber",
+            "namePlaceholder": "Barber Name",
+            "experiencePlaceholder": "Work Experience (months)",
+            "imagePlaceholder": "Image URL",
+            "isActive": "Active?",
+            "submitCreate": "Add",
+            "submitEdit": "Save"
+        },
+        "title": "Barbers Management",
+        "addButton": "Add Barber",
+        "card": {
+            "months": " Months",
+            "active": "Active",
+            "inactive": "Inactive",
+            "edit": "Edit",
+            "delete": "Delete"
+        }
+    },
+    "adminService": {
+        "modal": {
+            "create": "Create Service",
+            "edit": "Edit Service",
+            "namePlaceholder": "Service Name",
+            "pricePlaceholder": "Service Price",
+            "durationPlaceholder": "Service Duration",
+            "submitCreate": "Create",
+            "submitEdit": "Edit"
+        },
+        "title": "Service Management",
+        "addButton": "Create Service",
+        "table": {
+            "name": "NAME",
+            "price": "PRICE",
+            "duration": "DURATION",
+            "actions": "ACTIONS"
+        }
+    },
+    "footer": {
+        "title": "Holy Barbers",
+        "description": "Premium barbershop for true style and quality connoisseurs. We create not just haircuts, but images.",
+        "contacts": "Contacts",
+        "phone": "+48 (571) 371 493",
+        "address": "Wiosny Ludów 11, 40-374 Katowice",
+        "booking": "Booksy",
+        "worktime": "Working Hours",
+        "workdays": {
+            "mon_fri": "Monday - Friday: 9:00 - 19:00",
+            "sat": "Saturday: 9:00 - 17:00",
+            "sun": "Sunday: Closed"
+        },
+        "copyright": "© 2026 Holy Barbers. All rights reserved."
+    }
+}
