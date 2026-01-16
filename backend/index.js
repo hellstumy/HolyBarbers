@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import barberRoutes from "./routes/barber.js";
-import serviceRoutes from "./routes/service.js"; // исправил опечатку "servise"
+import serviceRoutes from "./routes/servise.js"; // исправил опечатку "servise"
 import appointmentRoutes from "./routes/appointment.js";
 import pool, { initDb } from "./db/db.js"; // импортируем initDb
 
