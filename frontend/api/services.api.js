@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/servise";
+const API_URL = "https://holybarbers-production.up.railway.app/service";
 
 export const servicesApi = {
   // Получить все услуги

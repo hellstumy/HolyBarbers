@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/appointment";
+const API_URL = "https://holybarbers-production.up.railway.app/appointment";
 
 export const appointmentsApi = {
   // Получить все записи

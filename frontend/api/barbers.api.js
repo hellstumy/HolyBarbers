@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/barber";
+const API_URL = "https://holybarbers-production.up.railway.app/barber";
 
 export const barbersApi = {
   getAllBarbers: async () => {
