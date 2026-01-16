@@ -1,29 +1,63 @@
-// api/test.js
-import { Pool } from "pg";
+import dotenv from "dotenv";
+dotenv.config(); // ВСЕГДА первым
 
-// Singleton Pool — создаётся один раз на холодный старт
-let pool;
+import { Pool, types } from "pg";
 
-function getPool() {
-  if (!pool) {
-    pool = new Pool({
-      connectionString: process.env.DATABASE_URL, // Neon connection string
-      ssl: { rejectUnauthorized: false }, // обязательно для Neon
-    });
-  }
-  return pool;
+// DATE как строка
+types.setTypeParser(1082, (value) => value);
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("❌ DATABASE_URL is not defined. Check .env file");
 }
 
-export default async function handler(req, res) {
-  const pool = getPool(); // получаем пул
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
+// Инициализация таблиц
+async function initDb() {
   try {
-    const result = await pool.query("SELECT NOW()"); // тестовый запрос
-    res.status(200).json({ time: result.rows[0] });
-  } catch (error) {
-    console.error("Database error:", error); // логи на Vercel
-    res
-      .status(500)
-      .json({ error: "Database connection failed", details: error.message });
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS barber (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        experiance INT NOT NULL,
+        is_active BOOLEAN DEFAULT TRUE,
+        img_url TEXT
+      );
+
+      CREATE TABLE IF NOT EXISTS service (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        price NUMERIC(10,2) NOT NULL,
+        duration INTERVAL NOT NULL,
+        is_active BOOLEAN DEFAULT TRUE
+      );
+
+      CREATE TABLE IF NOT EXISTS appointments (
+        id SERIAL PRIMARY KEY,
+        appointment_date DATE NOT NULL,
+        appointment_time TIME NOT NULL,
+        client_name VARCHAR(100) NOT NULL,
+        client_contact VARCHAR(100),
+        barber_id INT REFERENCES barber(id),
+        service_id INT REFERENCES service(id),
+        status VARCHAR(50)
+      );
+    `);
+
+    console.log("✅ Database initialized");
+  } catch (err) {
+    console.error("❌ Database init failed:", err.message);
+    process.exit(1);
   }
+  console.log("DATABASE_URL =", JSON.stringify(process.env.DATABASE_URL));
+
 }
+
+await initDb();
+
+export default pool;
