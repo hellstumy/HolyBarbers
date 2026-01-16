@@ -1,16 +1,14 @@
-import express from 'express';
-import pool from '../db/db.js';
+import express from "express";
+import pool from "../db/db.js";
 
 const router = express.Router();
 
-// Get All Appointments
+// GET all appointments with barber and service names
 router.get("/", async (req, res) => {
   try {
     const { rows } = await pool.query(`
       SELECT
         a.id,
-        a.barber_id,
-        a.service_id,
         a.appointment_date::date AS appointment_date,
         a.appointment_time,
         a.client_name,
@@ -19,28 +17,25 @@ router.get("/", async (req, res) => {
         b.name AS barber_name,
         s.name AS service_name
       FROM appointments a
-      JOIN barbers b ON a.barber_id = b.id
+      JOIN barber b ON a.barber_id = b.id
       JOIN service s ON a.service_id = s.id
       ORDER BY a.appointment_date, a.appointment_time
     `);
-
     res.json(rows);
   } catch (err) {
-    console.error("GET /appointments error:", err.message);
+    console.error("GET /appointment error:", err.message);
     res.status(500).json({ error: "Server error" });
   }
 });
-// Get Appointment by Phone Number //JOIN with barber, client and service tables to get names
+
+// GET appointments by contact
 router.get("/byContact/:contact", async (req, res) => {
   try {
     const { contact } = req.params;
-
     const { rows } = await pool.query(
       `
       SELECT
         a.id,
-        a.barber_id,
-        a.service_id,
         a.appointment_date::date AS appointment_date,
         a.appointment_time,
         a.client_name,
@@ -49,32 +44,28 @@ router.get("/byContact/:contact", async (req, res) => {
         b.name AS barber_name,
         s.name AS service_name
       FROM appointments a
-      JOIN barbers b ON a.barber_id = b.id
+      JOIN barber b ON a.barber_id = b.id
       JOIN service s ON a.service_id = s.id
       WHERE a.client_contact = $1
       ORDER BY a.appointment_date, a.appointment_time
-      `,
+    `,
       [contact]
     );
-
     res.json(rows);
   } catch (err) {
-    console.error("GET /appointments/byContact error:", err.message);
+    console.error("GET /appointment/byContact error:", err.message);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-// Get Appointment by Barber ID //JOIN with barber and service tables to get names
+// GET appointments by barber ID
 router.get("/byBarber/:barberId", async (req, res) => {
   try {
     const barberId = Number(req.params.barberId);
-
     const { rows } = await pool.query(
       `
       SELECT
         a.id,
-        a.barber_id,
-        a.service_id,
         a.appointment_date::date AS appointment_date,
         a.appointment_time,
         a.client_name,
@@ -83,112 +74,126 @@ router.get("/byBarber/:barberId", async (req, res) => {
         b.name AS barber_name,
         s.name AS service_name
       FROM appointments a
-      JOIN barbers b ON a.barber_id = b.id
+      JOIN barber b ON a.barber_id = b.id
       JOIN service s ON a.service_id = s.id
       WHERE a.barber_id = $1
       ORDER BY a.appointment_date, a.appointment_time
-      `,
+    `,
       [barberId]
     );
-
     res.json(rows);
   } catch (err) {
-    console.error("GET /appointments/byBarber error:", err.message);
+    console.error("GET /appointment/byBarber error:", err.message);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-// Create a New Appointment 
-router.post("/createAppointment", async(req, res) => {
-    const { barberId, serviceId, appointmentDate, appointment_time, name, contact } = req.body;
-    const newAppointment = await pool.query(
-        "INSERT INTO appointments (barber_id, service_id, appointment_date, appointment_time, client_name, client_contact) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-        [barberId, serviceId, appointmentDate, appointment_time, name, contact]
+// POST create new appointment
+router.post("/createAppointment", async (req, res) => {
+  try {
+    const {
+      barberId,
+      serviceId,
+      appointmentDate,
+      appointmentTime,
+      name,
+      contact,
+    } = req.body;
+    const { rows } = await pool.query(
+      `
+      INSERT INTO appointments (barber_id, service_id, appointment_date, appointment_time, client_name, client_contact)
+      VALUES ($1,$2,$3,$4,$5,$6)
+      RETURNING *`,
+      [barberId, serviceId, appointmentDate, appointmentTime, name, contact]
     );
-    res.json(newAppointment.rows[0]);
+    res.json(rows[0]);
+  } catch (err) {
+    console.error("POST /appointment error:", err.message);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
-// Update an Appointment
+// PUT update appointment
 router.put("/:id", async (req, res) => {
-  const appointmentId = Number(req.params.id);
-  const {
-    barberId,
-    serviceId,
-    appointmentDate,
-    appointment_time,
-    name,
-    contact,
-    status,
-  } = req.body;
-
-  // логируем для дебага
-  console.log("Updating appointment ID:", appointmentId);
-  console.log("Body:", req.body);
-
   try {
-    const result = await pool.query(
-      `UPDATE appointments
-       SET barber_id = $1,
-           service_id = $2,
-           appointment_date = $3,
-           appointment_time = $4,
-           client_name = $5,
-           client_contact = $6,
-           status = COALESCE($7, status)
-       WHERE id = $8
-       RETURNING *`,
+    const appointmentId = Number(req.params.id);
+    const {
+      barberId,
+      serviceId,
+      appointmentDate,
+      appointmentTime,
+      name,
+      contact,
+      status,
+    } = req.body;
+
+    const { rows } = await pool.query(
+      `
+      UPDATE appointments
+      SET barber_id=$1,
+          service_id=$2,
+          appointment_date=$3,
+          appointment_time=$4,
+          client_name=$5,
+          client_contact=$6,
+          status=COALESCE($7,status)
+      WHERE id=$8
+      RETURNING *`,
       [
         barberId,
         serviceId,
         appointmentDate,
-        appointment_time,
+        appointmentTime,
         name,
         contact,
-        status, // если не передан, останется прежним
+        status,
         appointmentId,
       ]
     );
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Appointment not found" });
-    }
+    if (rows.length === 0)
+      return res.status(404).json({ message: "Not found" });
 
-    const appointment = result.rows[0];
+    const appointment = rows[0];
     res.json(appointment);
 
-    // автoудаление через 10 секунд, если статус завершён или отменён
+    // Автоудаление через 24 часа для cancelled/completed
     if (
       appointment.status === "cancelled" ||
       appointment.status === "completed"
     ) {
       setTimeout(async () => {
         try {
-          await pool.query("DELETE FROM appointments WHERE id = $1", [
+          await pool.query("DELETE FROM appointments WHERE id=$1", [
             appointmentId,
           ]);
-          console.log(`Appointment ${appointmentId} deleted automatically`);
+          console.log(`Appointment ${appointmentId} auto-deleted`);
         } catch (err) {
           console.error("Auto-delete error:", err.message);
         }
       }, 86400 * 1000); // 24 часа
     }
   } catch (err) {
-    console.error("Update error:", err.message);
+    console.error("PUT /appointment/:id error:", err.message);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-// Delete an Appointment
-router.delete('/:id', async (req, res) => {
-  const appointmentId = parseInt(req.params.id);
-  const deletedAppointment = await pool.query(
-    "DELETE FROM appointments WHERE id = $1 RETURNING *",
-    [appointmentId]
-  );
-  if (deletedAppointment.rows.length === 0) {
-    res.status(404).json({ message: "Appointment not found" });
-  } else {
+// DELETE appointment
+router.delete("/:id", async (req, res) => {
+  try {
+    const appointmentId = Number(req.params.id);
+    const { rows } = await pool.query(
+      "DELETE FROM appointments WHERE id=$1 RETURNING *",
+      [appointmentId]
+    );
+
+    if (rows.length === 0)
+      return res.status(404).json({ message: "Not found" });
     res.json({ message: "Appointment deleted successfully" });
+  } catch (err) {
+    console.error("DELETE /appointment/:id error:", err.message);
+    res.status(500).json({ error: "Server error" });
   }
 });
 

@@ -2,7 +2,7 @@ import { Pool, types } from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
-types.setTypeParser(1082, (value) => value);
+types.setTypeParser(1082, (value) => value); // для даты
 
 const isDeployed = !!process.env.DATABASE_URL;
 
@@ -17,6 +17,7 @@ const pool = new Pool({
 
 export async function initDb() {
   try {
+    // Таблицы: barber, service, appointments
     await pool.query(`
       CREATE TABLE IF NOT EXISTS barber (
         id SERIAL PRIMARY KEY,
@@ -48,7 +49,7 @@ export async function initDb() {
 
     console.log(`✅ ${isDeployed ? "Cloud" : "Local"} database initialized`);
   } catch (err) {
-    console.error("❌ Database init failed:", err);
+    console.error("❌ Database init failed:", err.message);
   }
 }
 
