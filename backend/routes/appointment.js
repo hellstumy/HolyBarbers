@@ -130,15 +130,15 @@ router.put("/:id", async (req, res) => {
     const { rows } = await pool.query(
       `
       UPDATE appointments
-      SET barber_id=$1,
-          service_id=$2,
-          appointment_date=$3,
-          appointment_time=$4,
-          client_name=$5,
-          client_contact=$6,
-          status=COALESCE($7,status)
-      WHERE id=$8
-      RETURNING *`,
+SET barber_id = COALESCE($1, barber_id),
+    service_id = COALESCE($2, service_id),
+    appointment_date = COALESCE($3, appointment_date),
+    appointment_time = COALESCE($4, appointment_time),
+    client_name = COALESCE($5, client_name),
+    client_contact = COALESCE($6, client_contact),
+    status = COALESCE($7, status)
+WHERE id = $8
+RETURNING *`,
       [
         barberId,
         serviceId,
@@ -148,7 +148,7 @@ router.put("/:id", async (req, res) => {
         contact,
         status,
         appointmentId,
-      ]
+      ],
     );
 
     if (rows.length === 0)
@@ -156,23 +156,6 @@ router.put("/:id", async (req, res) => {
 
     const appointment = rows[0];
     res.json(appointment);
-
-    // Автоудаление через 24 часа для cancelled/completed
-    if (
-      appointment.status === "cancelled" ||
-      appointment.status === "completed"
-    ) {
-      setTimeout(async () => {
-        try {
-          await pool.query("DELETE FROM appointments WHERE id=$1", [
-            appointmentId,
-          ]);
-          console.log(`Appointment ${appointmentId} auto-deleted`);
-        } catch (err) {
-          console.error("Auto-delete error:", err.message);
-        }
-      }, 86400 * 1000); // 24 часа
-    }
   } catch (err) {
     console.error("PUT /appointment/:id error:", err.message);
     res.status(500).json({ error: "Server error" });
