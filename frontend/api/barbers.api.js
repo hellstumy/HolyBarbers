@@ -1,6 +1,6 @@
-const API_URL = process.env.REACT_APP_API_URL;
 
-const APPOINTMENT_URL = `${API_URL}/barber`;
+
+const APPOINTMENT_URL = `holybarbers-production.up.railway.app/barber`;
 
 export const barbersApi = {
   getAllBarbers: async () => {

@@ -1,7 +1,6 @@
 
-const API_URL = process.env.REACT_APP_API_URL;
 
-const APPOINTMENT_URL = `${API_URL}/appointment`;
+const APPOINTMENT_URL = `https://holybarbers-production.up.railway.app/appointment`;
 
 export const appointmentsApi = {
   // Получить все записи
