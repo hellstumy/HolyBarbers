@@ -48,7 +48,7 @@ const openingHours = {
           barberId: master,
           serviceId: selectedHaircut,
           appointmentDate: date,
-          appointment_time: time,
+          appointmentTime: time,
           name,
           contact: phone,
         });

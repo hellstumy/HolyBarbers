@@ -52,8 +52,8 @@ export default function AdminAppointment() {
   const handleCreate = async () => {
     try {
       const newAppointment = await appointmentsApi.createAppointmant({
-        serviceId,
         barberId,
+        serviceId,
         appointmentDate: date,
         appointmentTime: time,
         name: clientName,
