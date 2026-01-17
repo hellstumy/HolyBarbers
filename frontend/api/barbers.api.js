@@ -1,20 +1,22 @@
-const API_URL = "https://holybarbers-production.up.railway.app/barber";
+const API_URL = process.env.API_URL;
+
+const APPOINTMENT_URL = `${API_URL}/barber`;
 
 export const barbersApi = {
   getAllBarbers: async () => {
-    const res = await fetch(API_URL);
+    const res = await fetch(APPOINTMENT_URL);
     if (!res.ok) throw new Error("Failed to load barbers");
     return res.json();
   },
 
   getBarberById: async (id) => {
-    const res = await fetch(`${API_URL}/${id}`);
+    const res = await fetch(`${APPOINTMENT_URL}/${id}`);
     if (!res.ok) throw new Error("Barber not found");
     return res.json();
   },
 
   createBarber: async (data) => {
-    const res = await fetch(`${API_URL}/createBarber`, {
+    const res = await fetch(`${APPOINTMENT_URL}/createBarber`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -24,7 +26,7 @@ export const barbersApi = {
   },
 
   updateBarber: async (id, data) => {
-    const res = await fetch(`${API_URL}/${id}`, {
+    const res = await fetch(`${APPOINTMENT_URL}/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -34,7 +36,7 @@ export const barbersApi = {
   },
 
   removeBarber: async (id) => {
-    const res = await fetch(`${API_URL}/${id}`, {
+    const res = await fetch(`${APPOINTMENT_URL}/${id}`, {
       method: "DELETE",
     });
     if (!res.ok) throw new Error("Failed to delete barber");

@@ -1,16 +1,18 @@
-const API_URL = "https://holybarbers-production.up.railway.app/service";
+const API_URL = process.env.API_URL;
+
+const APPOINTMENT_URL = `${API_URL}/service`;
 
 export const servicesApi = {
   // Получить все услуги
   getAllService: async () => {
-    const res = await fetch(API_URL);
+    const res = await fetch(APPOINTMENT_URL);
     if (!res.ok) throw new Error("Failed to load services");
     return res.json();
   },
 
   // Создать услугу
   createService: async (data) => {
-    const res = await fetch(`${API_URL}/createService`, {
+    const res = await fetch(`${APPOINTMENT_URL}/createService`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -21,7 +23,7 @@ export const servicesApi = {
 
   // Обновить услугу
   updateService: async (id, data) => {
-    const res = await fetch(`${API_URL}/${id}`, {
+    const res = await fetch(`${APPOINTMENT_URL}/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -32,7 +34,7 @@ export const servicesApi = {
 
   // Удалить услугу
   removeService: async (id) => {
-    const res = await fetch(`${API_URL}/${id}`, {
+    const res = await fetch(`${APPOINTMENT_URL}/${id}`, {
       method: "DELETE",
     });
     if (!res.ok) throw new Error("Failed to delete service");

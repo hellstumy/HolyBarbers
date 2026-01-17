@@ -55,7 +55,7 @@ export default function AdminAppointment() {
         serviceId,
         barberId,
         appointmentDate: date,
-        appointment_time: time,
+        appointmentTime: time,
         name: clientName,
         contact: clientContact,
       });
@@ -87,7 +87,7 @@ export default function AdminAppointment() {
         serviceId,
         barberId,
         appointmentDate: date,
-        appointment_time: time,
+        appointmentTime: time,
         name: clientName,
         contact: clientContact,
       });
