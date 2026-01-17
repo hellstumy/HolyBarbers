@@ -1,6 +1,6 @@
 
 
-const APPOINTMENT_URL = `holybarbers-production.up.railway.app/service`;
+const APPOINTMENT_URL = `https://holybarbers-production.up.railway.app/service`;
 
 export const servicesApi = {
   // Получить все услуги

@@ -1,6 +1,6 @@
 
 
-const APPOINTMENT_URL = `holybarbers-production.up.railway.app/barber`;
+const APPOINTMENT_URL = `https://holybarbers-production.up.railway.app/barber`;
 
 export const barbersApi = {
   getAllBarbers: async () => {
